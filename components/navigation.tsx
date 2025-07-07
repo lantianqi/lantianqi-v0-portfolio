@@ -130,7 +130,7 @@ export default function Navigation() {
           font-weight: 500;
           display: flex;
           align-items: center;
-          justify-content: flex-end;
+          justify-content: flex-center;
           cursor: pointer;
           border: 1px solid transparent;
           position: relative;
