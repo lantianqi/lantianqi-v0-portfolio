@@ -29,30 +29,25 @@ export default function Navigation() {
     { href: "#contact", label: t("nav.contact"), id: "contact" },
   ]
 
-  const getLinkClassName = (sectionId: string) => {
-    const baseClasses =
-      "relative px-4 py-2 rounded-lg text-white/80 transition-all duration-300 ease-out cursor-pointer group overflow-hidden"
-    const activeClasses = "text-white bg-white/10 backdrop-blur-sm shadow-lg border border-white/20"
-    const hoverClasses =
-      "hover:text-white hover:bg-white/5 hover:backdrop-blur-sm hover:shadow-md hover:border-white/10 hover:scale-105 hover:-translate-y-0.5"
+  // Unified button classes for consistent sizing
+  const baseButtonClasses =
+    "h-10 px-4 py-2 rounded-lg transition-all duration-300 ease-out cursor-pointer group overflow-hidden border flex items-center justify-center min-w-[80px]"
+  const activeClasses = "text-white bg-white/10 backdrop-blur-sm shadow-lg border-white/20"
+  const hoverClasses =
+    "hover:text-white hover:bg-white/5 hover:backdrop-blur-sm hover:shadow-md hover:border-white/10 hover:scale-105 hover:-translate-y-0.5"
+  const inactiveClasses = "text-white/80 border-transparent"
 
+  const getButtonClassName = (sectionId: string) => {
     return activeSection === sectionId
-      ? `${baseClasses} ${activeClasses}`
-      : `${baseClasses} ${hoverClasses} border border-transparent`
+      ? `${baseButtonClasses} ${activeClasses}`
+      : `${baseButtonClasses} ${inactiveClasses} ${hoverClasses}`
   }
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-black/10 backdrop-blur-xl border-b border-white/10 shadow-2xl">
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          <button
-            onClick={() => handleNavClick("hero")}
-            className={`font-bold text-xl transition-all duration-300 ease-out cursor-pointer px-4 py-2 rounded-lg group overflow-hidden ${
-              activeSection === "hero"
-                ? "text-white bg-white/10 backdrop-blur-sm shadow-lg border border-white/20"
-                : "text-white hover:bg-white/5 hover:backdrop-blur-sm hover:shadow-md hover:border-white/10 hover:scale-105 hover:-translate-y-0.5 border border-transparent"
-            }`}
-          >
+          <button onClick={() => handleNavClick("hero")} className={`font-bold text-xl ${getButtonClassName("hero")}`}>
             <span className="relative z-10">{t("nav.portfolio")}</span>
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </button>
@@ -60,7 +55,7 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-2 items-center">
             {navItems.map((item) => (
-              <button key={item.id} onClick={() => handleNavClick(item.id)} className={getLinkClassName(item.id)}>
+              <button key={item.id} onClick={() => handleNavClick(item.id)} className={getButtonClassName(item.id)}>
                 <span className="relative z-10">{item.label}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </button>
@@ -69,16 +64,16 @@ export default function Navigation() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="md:hidden flex items-center space-x-2">
             <LanguageSwitcher />
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="relative text-white/80 hover:text-white hover:bg-white/10 hover:backdrop-blur-sm hover:shadow-md hover:border-white/10 hover:scale-105 hover:-translate-y-0.5 p-3 rounded-lg border border-transparent transition-all duration-300 ease-out group overflow-hidden"
+              className={`${baseButtonClasses} ${inactiveClasses} ${hoverClasses}`}
             >
               <span className="relative z-10">
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
@@ -93,7 +88,7 @@ export default function Navigation() {
                 <button
                   key={`mobile-${item.id}`}
                   onClick={() => handleNavClick(item.id)}
-                  className={`${getLinkClassName(item.id)} text-lg text-left w-full`}
+                  className={`${getButtonClassName(item.id)} text-lg text-left w-full`}
                 >
                   <span className="relative z-10">{item.label}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
