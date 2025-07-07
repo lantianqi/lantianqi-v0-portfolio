@@ -18,7 +18,7 @@
   background: rgba(0, 0, 0, 0.4);
   /*backdrop-filter: blur(50px) saturate(150%);
   -webkit-backdrop-filter: blur(50px) saturate(150%);*/
-  backdrop-filter: blur(35px) saturate(180%) brightness(105%) contrast(110%);
+  backdrop-filter: blur(120px) saturate(180%) brightness(105%) contrast(110%);
   -webkit-backdrop-filter: blur(35px) saturate(180%) brightness(105%) contrast(110%);
 
   /* Visual definition */
