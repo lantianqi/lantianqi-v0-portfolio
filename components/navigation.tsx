@@ -119,21 +119,35 @@ export default function Navigation() {
         }
 
         .mobile-dropdown {
-          background: rgba(0, 0, 0, 0.25);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          border-radius: 8px;
-          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
-          padding: 8px;
-          min-width: 120px;
+          /* Enhanced background with multiple layers */
+          background: rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(24px) saturate(180%);
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          
+          /* Stronger border for definition */
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 12px;
+          
+          /* Enhanced shadow for depth */
+          box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.6),
+            0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+          
+          /* Layout properties */
+          padding: 12px;
+          min-width: 140px;
           width: max-content;
-          position: relative;
+          position: fixed;
+          top: 80px;
+          right: 24px;
           overflow: hidden;
           z-index: 9999;
+          
+          /* Smooth transitions */
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Enhanced backdrop for better content separation */
+        /* Enhanced backdrop layer for extra content separation */
         .mobile-dropdown::before {
           content: '';
           position: absolute;
@@ -141,19 +155,38 @@ export default function Navigation() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.15);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
+          background: rgba(0, 0, 0, 0.25);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          pointer-events: none;
+          border-radius: inherit;
+          z-index: -1;
+        }
+
+        /* Additional backdrop layer for maximum content blocking */
+        .mobile-dropdown::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.3) 100%
+          );
           pointer-events: none;
           border-radius: inherit;
           z-index: -1;
         }
 
         .mobile-dropdown-button {
-          height: 40px;
-          padding: 0 16px;
-          border-radius: 6px;
-          font-size: 14px;
+          height: 44px;
+          padding: 0 20px;
+          border-radius: 8px;
+          font-size: 15px;
           font-weight: 500;
           display: flex;
           align-items: center;
@@ -166,12 +199,15 @@ export default function Navigation() {
           text-decoration: none;
           outline: none;
           background: transparent;
-          color: rgba(255, 255, 255, 0.9);
-          margin-bottom: 4px;
+          color: rgba(255, 255, 255, 0.95);
+          margin-bottom: 6px;
           white-space: nowrap;
           text-align: left;
           width: 100%;
           z-index: 1;
+          
+          /* Text shadow for better readability */
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .mobile-dropdown-button:last-child {
@@ -180,10 +216,11 @@ export default function Navigation() {
 
         .mobile-dropdown-button:hover {
           color: white;
-          background: rgba(255, 255, 255, 0.1);
-          border-color: rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(255, 255, 255, 0.3);
           transform: translateY(-1px) scale(1.02);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
         }
 
         .mobile-dropdown-button:active {
@@ -192,24 +229,10 @@ export default function Navigation() {
 
         .mobile-dropdown-button.active {
           color: white;
-          background: rgba(255, 255, 255, 0.15);
-          border-color: rgba(255, 255, 255, 0.3);
-          box-shadow: 0 2px 12px rgba(255, 255, 255, 0.1);
-        }
-
-        .mobile-dropdown-button::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-          transition: left 0.5s;
-        }
-
-        .mobile-dropdown-button:hover::before {
-          left: 100%;
+          background: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.4);
+          box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
         }
 
         @media (max-width: 768px) {
@@ -258,19 +281,17 @@ export default function Navigation() {
 
           {/* Mobile Navigation Menu */}
           {mobileMenuOpen && (
-            <div className="fixed top-20 right-6 md:hidden z-50">
-              <div className="mobile-dropdown">
-                <div className="flex flex-col min-w-max">
-                  {navItems.map((item) => (
-                    <button
-                      key={`mobile-${item.id}`}
-                      onClick={() => handleNavClick(item.id)}
-                      className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
+            <div className="mobile-dropdown">
+              <div className="flex flex-col min-w-max">
+                {navItems.map((item) => (
+                  <button
+                    key={`mobile-${item.id}`}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </div>
             </div>
           )}
