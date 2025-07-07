@@ -98,7 +98,7 @@ export default function Navigation() {
 
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
-          <div className="fixed top-20 right-6 md:hidden z-50">
+          <div className="fixed top-20 right-6 md:hidden z-60">
             <div className="mobile-dropdown">
               <div className="flex flex-col min-w-max">
                 {navItems.map((item) => (
