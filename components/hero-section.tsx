@@ -57,7 +57,7 @@ export default function HeroSection() {
 
           {/* Animated underline */}
           <div className="flex justify-center">
-            <div className="h-1 bg-gradient-to-r from-purple-400 to-pink-400 animated-underline max-w-[800px] w-full"></div>
+            <div className="h-1 bg-gradient-to-r from-purple-400 to-pink-400 animated-underline w-full"></div>
           </div>
         </div>
 
