@@ -17,7 +17,7 @@
   /* Enhanced glass morphism background */
   background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(50px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(0px) saturate(150%);
 
   /* Visual definition */
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
