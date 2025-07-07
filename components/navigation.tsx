@@ -105,10 +105,7 @@ export default function Navigation() {
           background: transparent;
           backdrop-filter: blur(40px);
           -webkit-backdrop-filter: blur(40px);
-          border: 10px solid rgba(255, 255, 255, 0.15);
-          border-radius: 8px;
           padding: 8px;
-          box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
           min-width: 120px;
           width: 100%;
           position: relative;
