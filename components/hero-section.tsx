@@ -33,8 +33,10 @@ export default function HeroSection() {
         </div>
 
         {/* Subtitle with typewriter effect */}
-        <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
-          <span className="typewriter">{t("hero.subtitle")}</span>
+        <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto px-4">
+          <span className="typewriter inline-block max-w-full break-words whitespace-normal border-r-2 border-white pr-0">
+            {t("hero.subtitle")}
+          </span>
         </p>
 
         {/* CTA Buttons */}
