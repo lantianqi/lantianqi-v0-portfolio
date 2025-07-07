@@ -1,103 +1,105 @@
-/* Handwritten Name Component Styles */
+/* Handwritten Name Animation Styles */
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
 .handwritten-name-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem 0;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 .handwritten-name {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   height: auto;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  margin: 0 auto;
 }
 
-/* Letter Animation Styles */
 .letter {
-  fill: none;
-  stroke: white;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
-  opacity: 0;
-  animation: draw 1s ease-in-out forwards;
+  animation: draw 1.2s ease-in-out forwards;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
 }
 
-/* Staggered animation delays for each letter */
+/* Dynamic letter animations - each letter appears sequentially */
 .letter-1 {
-  animation-delay: 0.5s;
+  animation-delay: 0.3s;
 }
 .letter-2 {
-  animation-delay: 1s;
+  animation-delay: 0.8s;
 }
 .letter-3 {
-  animation-delay: 1.5s;
+  animation-delay: 1.3s;
 }
 .letter-4 {
-  animation-delay: 2s;
+  animation-delay: 1.8s;
 }
 .letter-5 {
-  animation-delay: 2.5s;
+  animation-delay: 2.3s;
 }
 .letter-6 {
-  animation-delay: 3s;
+  animation-delay: 2.8s;
 }
 .letter-7 {
-  animation-delay: 3.5s;
+  animation-delay: 3.3s;
 }
 .letter-8 {
-  animation-delay: 4s;
+  animation-delay: 3.8s;
 }
 .letter-9 {
-  animation-delay: 4.5s;
+  animation-delay: 4.3s;
 }
 
-@keyframes draw {
-  0% {
-    stroke-dashoffset: 1000;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
+/* Additional delays for longer names */
+.letter-10 {
+  animation-delay: 4.8s;
 }
-
-/* Glow effect on completion */
-.handwritten-name-container:hover .letter {
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
-  transition: filter 0.3s ease;
+.letter-11 {
+  animation-delay: 5.3s;
+}
+.letter-12 {
+  animation-delay: 5.8s;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .handwritten-name {
-    max-width: 400px;
+    max-width: 600px;
   }
 }
 
 @media (max-width: 480px) {
   .handwritten-name {
-    max-width: 300px;
+    max-width: 400px;
   }
 }
 
-/* Animated underline that appears after name animation */
-.animated-underline {
-  animation: underline-expand 2s ease-out 4.5s both;
+/* Hover effects for interactive feel */
+.handwritten-name-container:hover .letter {
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
+  transition: filter 0.3s ease;
 }
 
-@keyframes underline-expand {
-  0% {
-    width: 0;
-  }
+/* Glow effect animation */
+@keyframes glow {
+  0%,
   100% {
-    width: 100%;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
   }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.6));
+  }
+}
+
+.letter.completed {
+  animation: glow 2s ease-in-out infinite;
 }
