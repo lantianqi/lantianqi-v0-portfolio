@@ -1,0 +1,105 @@
+/* Handwritten Name Animation Styles */
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.handwritten-name-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.handwritten-name {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.letter {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw 1.2s ease-in-out forwards;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+/* Dynamic letter animations - each letter appears sequentially */
+.letter-1 {
+  animation-delay: 0.3s;
+}
+.letter-2 {
+  animation-delay: 0.8s;
+}
+.letter-3 {
+  animation-delay: 1.3s;
+}
+.letter-4 {
+  animation-delay: 1.8s;
+}
+.letter-5 {
+  animation-delay: 2.3s;
+}
+.letter-6 {
+  animation-delay: 2.8s;
+}
+.letter-7 {
+  animation-delay: 3.3s;
+}
+.letter-8 {
+  animation-delay: 3.8s;
+}
+.letter-9 {
+  animation-delay: 4.3s;
+}
+
+/* Additional delays for longer names */
+.letter-10 {
+  animation-delay: 4.8s;
+}
+.letter-11 {
+  animation-delay: 5.3s;
+}
+.letter-12 {
+  animation-delay: 5.8s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .handwritten-name {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .handwritten-name {
+    max-width: 400px;
+  }
+}
+
+/* Hover effects for interactive feel */
+.handwritten-name-container:hover .letter {
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
+  transition: filter 0.3s ease;
+}
+
+/* Glow effect animation */
+@keyframes glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.6));
+  }
+}
+
+.letter.completed {
+  animation: glow 2s ease-in-out infinite;
+}

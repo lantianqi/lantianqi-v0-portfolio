@@ -1,0 +1,40 @@
+/* Language Switcher Styles */
+.language-switcher {
+  transition: all 0.3s ease;
+}
+
+.language-switcher:hover {
+  transform: translateY(-1px);
+}
+
+/* Smooth text transition */
+.language-switcher span {
+  transition: opacity 0.2s ease;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .language-switcher {
+    padding: 0.5rem;
+  }
+
+  .language-switcher span {
+    font-size: 0.875rem;
+  }
+}
+
+/* Animation for language change */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.language-transition {
+  animation: fadeIn 0.3s ease-out;
+}
