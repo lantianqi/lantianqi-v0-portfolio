@@ -151,13 +151,14 @@ export default function Navigation() {
 
         .mobile-dropdown-button {
           height: 40px;
+          width: 120px;
           padding: 0 16px;
           border-radius: 6px;
           font-size: 14px;
           font-weight: 500;
           display: flex;
           align-items: center;
-          justify-content: flex-start;
+          justify-content: flex-end;
           cursor: pointer;
           border: 1px solid transparent;
           position: relative;
@@ -169,8 +170,8 @@ export default function Navigation() {
           color: rgba(255, 255, 255, 0.8);
           margin-bottom: 4px;
           white-space: nowrap;
-          text-align: left;
-          width: 100%;
+          text-align: right;
+          margin-left: auto;
         }
 
         .mobile-dropdown-button:last-child {
