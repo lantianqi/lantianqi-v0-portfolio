@@ -124,13 +124,13 @@ export default function Navigation() {
         }
 
         .mobile-dropdown {
-          background: rgba(0, 0, 0, 0.1);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(0, 0, 0, 0.3);
+          backdrop-filter: blur(40px);
+          -webkit-backdrop-filter: blur(40px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
           border-radius: 8px;
           padding: 8px;
-          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
           min-width: 120px;
           width: max-content;
           position: relative;
@@ -144,7 +144,7 @@ export default function Navigation() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(255, 255, 255, 0.02);
+          background: rgba(0, 0, 0, 0.1);
           pointer-events: none;
           border-radius: inherit;
         }
