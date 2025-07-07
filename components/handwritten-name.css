@@ -21,6 +21,7 @@
   max-width: 800px;
   height: auto;
   margin: 0 auto;
+  display: block;
 }
 
 .letter {
@@ -28,6 +29,11 @@
   stroke-dashoffset: 1000;
   animation: draw 1.2s ease-in-out forwards;
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Dynamic letter animations - each letter appears sequentially */

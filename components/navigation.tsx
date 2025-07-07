@@ -1,93 +1,82 @@
 "use client"
 
 import "./navigation.css"
+import { useState } from "react"
+import Link from "next/link"
 import { Menu, X } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import LanguageSwitcher from "@/components/language-switcher"
 import { useLanguage } from "@/contexts/language-context"
 import { useScrollSpy } from "@/hooks/use-scroll-spy"
-import { useState } from "react"
+
+const navItems = [
+  { key: "hero", href: "#hero" },
+  { key: "about", href: "#about" },
+  { key: "projects", href: "#projects" },
+  { key: "contact", href: "#contact" },
+]
 
 export default function Navigation() {
+  const [isOpen, setIsOpen] = useState(false)
   const { t } = useLanguage()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const activeSection = useScrollSpy(navItems.map((item) => item.key))
 
-  // Track active section for highlighting
-  const { activeSection, navigateToSection } = useScrollSpy({
-    sections: ["hero", "about", "projects", "contact"],
-    offset: 100,
-    updateUrl: true,
-  })
-
-  const handleNavClick = (sectionId: string) => {
-    console.log(`Navigating to section: ${sectionId}`) // Debug log
-    navigateToSection(sectionId)
-    setMobileMenuOpen(false) // Close mobile menu if open
-  }
-
-  const navItems = [
-    { href: "#about", label: t("nav.about"), id: "about" },
-    { href: "#projects", label: t("nav.projects"), id: "projects" },
-    { href: "#contact", label: t("nav.contact"), id: "contact" },
-  ]
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
+  const handleNavClick = (href: string) => {
+    setIsOpen(false)
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
   }
 
   return (
     <nav className="nav-container">
-      <div className="nav-content">
-        <div className="flex justify-between items-center">
-          {/* Portfolio/Logo Button */}
-          <button
-            onClick={() => handleNavClick("hero")}
-            className={`nav-button font-bold nav-portfolio-button ${
-              activeSection === "hero" ? "nav-button-active" : "nav-button-inactive"
-            }`}
-          >
-            {t("nav.portfolio")}
-          </button>
+      <div className="nav-inner">
+        <Link href="#hero" className="nav-logo" onClick={() => handleNavClick("#hero")}>
+          Portfolio
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center nav-desktop-container">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`nav-button ${activeSection === item.id ? "nav-button-active" : "nav-button-inactive"}`}
-              >
-                {item.label}
-              </button>
-            ))}
-            <LanguageSwitcher />
-          </div>
-
-          {/* Mobile Controls */}
-          <div className="md:hidden flex items-center nav-mobile-container">
-            <LanguageSwitcher />
-            <button onClick={toggleMobileMenu} className="nav-button nav-button-inactive nav-mobile-toggle">
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        {/* Desktop Navigation */}
+        <div className="nav-desktop">
+          {navItems.map((item) => (
+            <button
+              key={item.key}
+              onClick={() => handleNavClick(item.href)}
+              className={`nav-link ${activeSection === item.key ? "active" : ""}`}
+            >
+              {t(`nav.${item.key}`)}
             </button>
+          ))}
+          <div className="nav-language-switcher">
+            <LanguageSwitcher />
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
-        {mobileMenuOpen && (
-          <div className="mobile-dropdown">
-            <div className="flex flex-col min-w-max">
-              {navItems.map((item) => (
-                <button
-                  key={`mobile-${item.id}`}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
-                >
-                  {item.label}
-                </button>
-              ))}
+        {/* Mobile Menu Button */}
+        <Button variant="ghost" size="sm" className="nav-mobile-button" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </Button>
+      </div>
+
+      {/* Mobile Dropdown */}
+      {isOpen && (
+        <div className="mobile-dropdown">
+          <div className="mobile-dropdown-inner">
+            {navItems.map((item) => (
+              <button
+                key={item.key}
+                onClick={() => handleNavClick(item.href)}
+                className={`mobile-nav-link ${activeSection === item.key ? "active" : ""}`}
+              >
+                {t(`nav.${item.key}`)}
+              </button>
+            ))}
+            <div className="mobile-language-switcher">
+              <LanguageSwitcher />
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   )
 }

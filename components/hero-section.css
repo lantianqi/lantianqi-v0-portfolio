@@ -76,8 +76,9 @@
 .hero-underline {
   height: 0.25rem;
   background: linear-gradient(to right, rgb(196 181 253), rgb(251 207 232));
-  animation: underline-expand 2s ease-out 6s both;
-  width: 100%;
+  width: 0;
+  animation: drawUnderline 1.5s ease-in-out 5.5s;
+  animation-fill-mode: both;
 }
 
 /* Typewriter Effect */
@@ -85,16 +86,22 @@
   display: inline-block;
   max-width: 100%;
   text-align: left;
+  line-height: 1.4;
+  min-height: 1.4em;
 }
 
 .typewriter-text {
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .typewriter-cursor {
   display: inline-block;
   margin-left: 0.25rem;
-  animation: blink 1s infinite;
+  color: white;
+  font-weight: normal;
+  vertical-align: baseline;
 }
 
 .typewriter-cursor.animate-blink {
@@ -165,7 +172,7 @@
   }
 }
 
-@keyframes underline-expand {
+@keyframes drawUnderline {
   0% {
     width: 0;
   }
