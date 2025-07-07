@@ -63,7 +63,9 @@ export default function Navigation() {
   return (
     <nav className="fixed top-0 w-full nav-container">
       
-      
+      <div className="container mx-auto px-6 py-4">
+        
+      </div>
     </nav>
   )
 }
