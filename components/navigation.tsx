@@ -102,7 +102,7 @@ export default function Navigation() {
         }
 
         .mobile-dropdown {
-          background: rgba(0, 0, 0, 0);
+          background: transparent;
           backdrop-filter: blur(40px);
           -webkit-backdrop-filter: blur(40px);
           border: 1px solid rgba(255, 255, 255, 0.15);
