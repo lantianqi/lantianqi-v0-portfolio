@@ -14,12 +14,10 @@
   /* CRITICAL: Highest z-index to stay above all content */
   z-index: 9999 !important;
 
-  /* Enhanced glass morphism background */
-  background: rgba(0, 0, 0, 0.4);
-  /*backdrop-filter: blur(50px) saturate(150%);
-  -webkit-backdrop-filter: blur(50px) saturate(150%);*/
-  backdrop-filter: blur(120px) saturate(180%) brightness(105%) contrast(110%);
-  -webkit-backdrop-filter: blur(120px) saturate(180%) brightness(105%) contrast(110%);
+  /* Glass morphism background with blur */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(150%) brightness(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%) brightness(110%);
 
   /* Visual definition */
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
