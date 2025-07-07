@@ -63,59 +63,7 @@ export default function Navigation() {
   return (
     <nav className="fixed top-0 w-full nav-container">
       
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
-          {/* Portfolio/Logo Button */}
-          <button
-            onClick={() => handleNavClick("hero")}
-            className={`${getButtonClassName(activeSection === "hero")} font-bold`}
-            style={{ minWidth: "120px" }}
-          >
-            {t("nav.portfolio")}
-          </button>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center" style={{ gap: "12px" }}>
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={getButtonClassName(activeSection === item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
-            <LanguageSwitcher />
-          </div>
-
-          {/* Mobile Controls */}
-          <div className="md:hidden flex items-center" style={{ gap: "12px" }}>
-            <LanguageSwitcher />
-            <button onClick={toggleMobileMenu} className={getButtonClassName()} style={{ minWidth: "44px" }}>
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Menu */}
-        {mobileMenuOpen && (
-          <div className="fixed top-20 right-6 md:hidden ">
-            <div className="mobile-dropdown">
-              <div className="flex flex-col min-w-max">
-                {navItems.map((item) => (
-                  <button
-                    key={`mobile-${item.id}`}
-                    onClick={() => handleNavClick(item.id)}
-                    className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      
     </nav>
   )
 }
