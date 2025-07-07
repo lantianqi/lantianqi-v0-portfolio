@@ -257,5 +257,5 @@ a {
 
 /* Fix any potential z-index issues */
 .nav-container {
-  z-index: 0;
+  z-index: 50;
 }
