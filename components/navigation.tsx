@@ -29,28 +29,6 @@ export default function Navigation() {
     { href: "#contact", label: t("nav.contact"), id: "contact" },
   ]
 
-  // Base button styles - simplified and working
-  const baseButtonStyles = {
-    height: "44px",
-    minWidth: "100px",
-    padding: "0 16px",
-    borderRadius: "8px",
-    fontSize: "14px",
-    fontWeight: "500",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    cursor: "pointer",
-    border: "1px solid transparent",
-    position: "relative" as const,
-    overflow: "hidden",
-    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-    textDecoration: "none",
-    outline: "none",
-    backgroundColor: "transparent",
-  }
-
   const getButtonClassName = (isActive = false) => {
     return `nav-button ${isActive ? "nav-button-active" : "nav-button-inactive"}`
   }
@@ -219,6 +197,10 @@ export default function Navigation() {
           box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
         }
 
+        .dropdown-content {
+          background: transparent;
+        }
+
         @media (max-width: 768px) {
           .nav-button {
             min-width: 80px;
@@ -267,7 +249,7 @@ export default function Navigation() {
           {mobileMenuOpen && (
             <div className="mt-4 md:hidden">
               <div className="mobile-dropdown">
-                <div className="flex flex-col min-w-max">
+                <div className="dropdown-content flex flex-col min-w-max">
                   {navItems.map((item) => (
                     <button
                       key={`mobile-${item.id}`}
