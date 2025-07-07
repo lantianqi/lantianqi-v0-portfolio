@@ -29,28 +29,6 @@ export default function Navigation() {
     { href: "#contact", label: t("nav.contact"), id: "contact" },
   ]
 
-  // Base button styles - simplified and working
-  const baseButtonStyles = {
-    height: "44px",
-    minWidth: "100px",
-    padding: "0 16px",
-    borderRadius: "8px",
-    fontSize: "14px",
-    fontWeight: "500",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    cursor: "pointer",
-    border: "1px solid transparent",
-    position: "relative" as const,
-    overflow: "hidden",
-    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-    textDecoration: "none",
-    outline: "none",
-    backgroundColor: "transparent",
-  }
-
   const getButtonClassName = (isActive = false) => {
     return `nav-button ${isActive ? "nav-button-active" : "nav-button-inactive"}`
   }
@@ -123,16 +101,31 @@ export default function Navigation() {
           left: 100%;
         }
 
-        .mobile-dropdown {
-          background: rgba(0, 0, 0, 0.1);
+        /* Consistent glass morphism base styles */
+        .glass-morphism-base {
+          background: rgba(0, 0, 0, 0.25);
           backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
-          -webkit-backdrop-filter: blur(40px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-container {
+          background: rgba(0, 0, 0, 0.25);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .mobile-dropdown {
+          background: rgba(0, 0, 0, 0.25);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           border: 1px solid rgba(255, 255, 255, 0.15);
           border-radius: 8px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
           padding: 8px;
-          box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
           min-width: 120px;
           width: max-content;
           position: relative;
@@ -140,6 +133,7 @@ export default function Navigation() {
           z-index: 9999;
         }
 
+        /* Enhanced backdrop for better content separation */
         .mobile-dropdown::before {
           content: '';
           position: absolute;
@@ -147,9 +141,12 @@ export default function Navigation() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.1);
+          background: rgba(0, 0, 0, 0.15);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
           pointer-events: none;
           border-radius: inherit;
+          z-index: -1;
         }
 
         .mobile-dropdown-button {
@@ -169,11 +166,12 @@ export default function Navigation() {
           text-decoration: none;
           outline: none;
           background: transparent;
-          color: rgba(255, 255, 255, 0.8);
+          color: rgba(255, 255, 255, 0.9);
           margin-bottom: 4px;
           white-space: nowrap;
           text-align: left;
           width: 100%;
+          z-index: 1;
         }
 
         .mobile-dropdown-button:last-child {
@@ -182,10 +180,10 @@ export default function Navigation() {
 
         .mobile-dropdown-button:hover {
           color: white;
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.2);
           transform: translateY(-1px) scale(1.02);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .mobile-dropdown-button:active {
@@ -194,8 +192,8 @@ export default function Navigation() {
 
         .mobile-dropdown-button.active {
           color: white;
-          background: rgba(255, 255, 255, 0.1);
-          border-color: rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(255, 255, 255, 0.3);
           box-shadow: 0 2px 12px rgba(255, 255, 255, 0.1);
         }
 
@@ -212,13 +210,6 @@ export default function Navigation() {
 
         .mobile-dropdown-button:hover::before {
           left: 100%;
-        }
-
-        .nav-container {
-          background: rgba(0, 0, 0, 0.1);
-          backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
         }
 
         @media (max-width: 768px) {
