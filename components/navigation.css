@@ -19,19 +19,26 @@
   backdrop-filter: blur(20px) saturate(150%) brightness(110%);
   -webkit-backdrop-filter: blur(20px) saturate(150%) brightness(110%);
 
-  /* Visual definition */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-
+  /* Border and shadow for glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  
+  /* Layout and spacing */
+  padding: 24px;
+  margin: 16px;
+  
   /* Performance optimizations */
   transform: translateZ(0);
   will-change: backdrop-filter;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-
-  /* Prevent any margin/padding issues */
-  margin: 0 !important;
-  padding: 0 !important;
+  
+  /* Smooth transitions */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Container content wrapper */
