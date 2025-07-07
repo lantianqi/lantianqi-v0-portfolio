@@ -103,8 +103,6 @@ export default function Navigation() {
 
         .mobile-dropdown {
           background: transparent;
-          backdrop-filter: blur(40px);
-          -webkit-backdrop-filter: blur(40px);
           padding: 8px;
           min-width: 120px;
           width: 100%;
