@@ -73,7 +73,6 @@
   width: max-content;
   position: relative;
   overflow: hidden;
-  z-index: 9999;
   isolation: isolate;
 }
 
