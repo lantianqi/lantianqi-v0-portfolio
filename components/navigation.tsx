@@ -1,5 +1,6 @@
 "use client"
 
+import "./navigation.css"
 import { Menu, X } from "lucide-react"
 import LanguageSwitcher from "@/components/language-switcher"
 import { useLanguage } from "@/contexts/language-context"
@@ -29,391 +30,62 @@ export default function Navigation() {
     { href: "#contact", label: t("nav.contact"), id: "contact" },
   ]
 
-  const getButtonClassName = (isActive = false) => {
-    return `nav-button ${isActive ? "nav-button-active" : "nav-button-inactive"}`
-  }
-
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
   }
 
   return (
-    <>
-      <style jsx>{`
-  /* ===========================================
-     FIXED NAVIGATION - CRITICAL POSITIONING
-     =========================================== */
+    <nav className="nav-container">
+      <div className="nav-content">
+        <div className="flex justify-between items-center">
+          {/* Portfolio/Logo Button */}
+          <button
+            onClick={() => handleNavClick("hero")}
+            className={`nav-button font-bold ${activeSection === "hero" ? "nav-button-active" : "nav-button-inactive"}`}
+          >
+            {t("nav.portfolio")}
+          </button>
 
-  /* Root navigation container - highest priority */
-  .nav-container {
-    /* CRITICAL: Fixed positioning with explicit coordinates */
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100vw !important;
-    
-    /* CRITICAL: Highest z-index to stay above all content */
-    z-index: 9999 !important;
-    
-    /* Enhanced glass morphism background */
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    
-    /* Visual definition */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 
-      0 4px 32px rgba(0, 0, 0, 0.4),
-      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-    
-    /* Performance optimizations */
-    transform: translateZ(0);
-    will-change: backdrop-filter;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    
-    /* Prevent any margin/padding issues */
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center nav-desktop-container">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`nav-button ${activeSection === item.id ? "nav-button-active" : "nav-button-inactive"}`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <LanguageSwitcher />
+          </div>
 
-  /* Container content wrapper */
-  .nav-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 16px 24px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Mobile dropdown - even higher z-index */
-  .mobile-dropdown {
-    /* CRITICAL: Higher z-index than nav-container */
-    position: fixed !important;
-    top: 80px !important;
-    right: 24px !important;
-    z-index: 10000 !important;
-    
-    /* Multi-layered background for maximum content blocking */
-    background: 
-      linear-gradient(135deg, 
-        rgba(0, 0, 0, 0.45) 0%, 
-        rgba(0, 0, 0, 0.35) 50%, 
-        rgba(0, 0, 0, 0.45) 100%
-      );
-    
-    /* Enhanced blur stack */
-    backdrop-filter: 
-      blur(28px) 
-      saturate(180%) 
-      brightness(110%) 
-      contrast(120%);
-    -webkit-backdrop-filter: 
-      blur(28px) 
-      saturate(180%) 
-      brightness(110%) 
-      contrast(120%);
-    
-    /* Strong visual definition */
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 12px;
-    
-    /* Enhanced shadow stack */
-    box-shadow: 
-      0 8px 40px rgba(0, 0, 0, 0.7),
-      0 4px 20px rgba(0, 0, 0, 0.5),
-      0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-      0 1px 0 rgba(255, 255, 255, 0.2) inset;
-    
-    /* Layout properties */
-    padding: 16px;
-    min-width: 160px;
-    width: max-content;
-    overflow: hidden;
-    
-    /* Performance optimizations */
-    transform: translateZ(0);
-    will-change: backdrop-filter, transform;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    
-    /* Smooth transitions */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Multiple backdrop layers for content separation */
-  .mobile-dropdown::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(12px) saturate(150%);
-    -webkit-backdrop-filter: blur(12px) saturate(150%);
-    pointer-events: none;
-    border-radius: inherit;
-    z-index: -2;
-  }
-
-  .mobile-dropdown::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(ellipse at center, 
-        rgba(0, 0, 0, 0.2) 0%, 
-        rgba(0, 0, 0, 0.4) 100%
-      );
-    pointer-events: none;
-    border-radius: inherit;
-    z-index: -1;
-  }
-
-  /* Navigation buttons */
-  .nav-button {
-    height: 44px;
-    min-width: 100px;
-    padding: 0 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    outline: none;
-    background: transparent;
-    white-space: nowrap;
-    transform: translateZ(0);
-    z-index: 1;
-  }
-
-  .nav-button-inactive {
-    color: rgba(255, 255, 255, 0.8);
-    border-color: transparent;
-  }
-
-  .nav-button-inactive:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px) scale(1.05) translateZ(0);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  .nav-button-active {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
-  }
-
-  .nav-button:active {
-    transform: translateY(0) scale(1.02) translateZ(0);
-  }
-
-  .nav-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s;
-  }
-
-  .nav-button:hover::before {
-    left: 100%;
-  }
-
-  /* Mobile dropdown buttons */
-  .mobile-dropdown-button {
-    height: 48px;
-    padding: 0 20px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    cursor: pointer;
-    border: 1px solid transparent;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    outline: none;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.98);
-    margin-bottom: 8px;
-    white-space: nowrap;
-    text-align: left;
-    width: 100%;
-    z-index: 1;
-    text-shadow: 
-      0 1px 2px rgba(0, 0, 0, 0.8),
-      0 0 4px rgba(0, 0, 0, 0.5);
-    transform: translateZ(0);
-  }
-
-  .mobile-dropdown-button:last-child {
-    margin-bottom: 0;
-  }
-
-  .mobile-dropdown-button:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.35);
-    transform: translateY(-1px) scale(1.02) translateZ(0);
-    box-shadow: 
-      0 4px 16px rgba(0, 0, 0, 0.4),
-      0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-    text-shadow: 
-      0 1px 3px rgba(0, 0, 0, 0.9),
-      0 0 6px rgba(0, 0, 0, 0.6);
-  }
-
-  .mobile-dropdown-button:active {
-    transform: translateY(0) scale(1.01) translateZ(0);
-  }
-
-  .mobile-dropdown-button.active {
-    color: white;
-    background: rgba(255, 255, 255, 0.22);
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 
-      0 2px 12px rgba(255, 255, 255, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.3) inset;
-    text-shadow: 
-      0 1px 3px rgba(0, 0, 0, 0.9),
-      0 0 8px rgba(0, 0, 0, 0.7);
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .nav-button {
-      min-width: 80px;
-      padding: 0 12px;
-      font-size: 13px;
-    }
-    
-    .mobile-dropdown {
-      right: 16px !important;
-      min-width: 140px;
-      backdrop-filter: 
-        blur(32px) 
-        saturate(200%) 
-        brightness(115%) 
-        contrast(125%);
-      -webkit-backdrop-filter: 
-        blur(32px) 
-        saturate(200%) 
-        brightness(115%) 
-        contrast(125%);
-    }
-
-    .nav-content {
-      padding: 16px;
-    }
-  }
-
-  /* High DPI display optimizations */
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .mobile-dropdown {
-      backdrop-filter: 
-        blur(36px) 
-        saturate(220%) 
-        brightness(120%) 
-        contrast(130%);
-      -webkit-backdrop-filter: 
-        blur(36px) 
-        saturate(220%) 
-        brightness(120%) 
-        contrast(130%);
-    }
-  }
-
-  /* Fallback for browsers without backdrop-filter support */
-  @supports not (backdrop-filter: blur(1px)) {
-    .nav-container {
-      background: rgba(0, 0, 0, 0.9);
-    }
-    
-    .mobile-dropdown {
-      background: rgba(0, 0, 0, 0.95);
-      box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.8),
-        0 4px 20px rgba(0, 0, 0, 0.6);
-    }
-  }
-`}</style>
-
-      <nav className="nav-container">
-        <div className="nav-content">
-          <div className="flex justify-between items-center">
-            {/* Portfolio/Logo Button */}
-            <button
-              onClick={() => handleNavClick("hero")}
-              className={`${getButtonClassName(activeSection === "hero")} font-bold`}
-              style={{ minWidth: "120px" }}
-            >
-              {t("nav.portfolio")}
+          {/* Mobile Controls */}
+          <div className="md:hidden flex items-center nav-mobile-container">
+            <LanguageSwitcher />
+            <button onClick={toggleMobileMenu} className="nav-button nav-button-inactive nav-mobile-toggle">
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
+          </div>
+        </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center" style={{ gap: "12px" }}>
+        {/* Mobile Navigation Menu */}
+        {mobileMenuOpen && (
+          <div className="mobile-dropdown">
+            <div className="flex flex-col min-w-max">
               {navItems.map((item) => (
                 <button
-                  key={item.id}
+                  key={`mobile-${item.id}`}
                   onClick={() => handleNavClick(item.id)}
-                  className={getButtonClassName(activeSection === item.id)}
+                  className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
                 >
                   {item.label}
                 </button>
               ))}
-              <LanguageSwitcher />
-            </div>
-
-            {/* Mobile Controls */}
-            <div className="md:hidden flex items-center" style={{ gap: "12px" }}>
-              <LanguageSwitcher />
-              <button onClick={toggleMobileMenu} className={getButtonClassName()} style={{ minWidth: "44px" }}>
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
             </div>
           </div>
-
-          {/* Mobile Navigation Menu */}
-          {mobileMenuOpen && (
-            <div className="mobile-dropdown">
-              <div className="flex flex-col min-w-max">
-                {navItems.map((item) => (
-                  <button
-                    key={`mobile-${item.id}`}
-                    onClick={() => handleNavClick(item.id)}
-                    className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
-    </>
+        )}
+      </div>
+    </nav>
   )
 }
