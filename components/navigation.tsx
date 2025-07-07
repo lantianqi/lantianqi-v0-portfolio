@@ -124,7 +124,7 @@ export default function Navigation() {
           -webkit-backdrop-filter: blur(20px);
           border: 1px solid rgba(255, 255, 255, 0.15);
           border-radius: 8px;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
           padding: 8px;
           min-width: 120px;
           width: max-content;
