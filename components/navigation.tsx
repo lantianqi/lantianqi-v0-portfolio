@@ -62,6 +62,7 @@ export default function Navigation() {
 
   return (
     <nav className="fixed top-0 w-full nav-container">
+      /*
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Portfolio/Logo Button */}
@@ -115,6 +116,7 @@ export default function Navigation() {
           </div>
         )}
       </div>
+      */
     </nav>
   )
 }
