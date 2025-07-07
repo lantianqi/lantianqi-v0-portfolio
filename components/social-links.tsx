@@ -1,6 +1,5 @@
 "use client"
 
-import "./social-links.css"
 import { Github, Linkedin, Mail } from "lucide-react"
 import Link from "next/link"
 
@@ -18,14 +17,14 @@ export default function SocialLinks({
   emailUrl = "#",
 }: SocialLinksProps) {
   return (
-    <div className={`social-links-container ${className}`}>
-      <Link href={githubUrl} className="social-link">
+    <div className={`flex justify-center space-x-6 ${className}`}>
+      <Link href={githubUrl} className="text-white/60 hover:text-white transition-colors p-2">
         <Github className="w-6 h-6" />
       </Link>
-      <Link href={linkedinUrl} className="social-link">
+      <Link href={linkedinUrl} className="text-white/60 hover:text-white transition-colors p-2">
         <Linkedin className="w-6 h-6" />
       </Link>
-      <Link href={emailUrl} className="social-link">
+      <Link href={emailUrl} className="text-white/60 hover:text-white transition-colors p-2">
         <Mail className="w-6 h-6" />
       </Link>
     </div>

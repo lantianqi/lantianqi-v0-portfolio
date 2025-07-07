@@ -1,6 +1,5 @@
 "use client"
 
-import "./scroll-indicator.css"
 import { ArrowDown } from "lucide-react"
 
 interface ScrollIndicatorProps {
@@ -9,7 +8,7 @@ interface ScrollIndicatorProps {
 
 export default function ScrollIndicator({ className = "" }: ScrollIndicatorProps) {
   return (
-    <div className={`scroll-indicator ${className}`}>
+    <div className={`animate-bounce ${className}`}>
       <ArrowDown className="w-6 h-6 text-white/60 mx-auto" />
     </div>
   )
