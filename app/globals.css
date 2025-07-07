@@ -258,4 +258,5 @@ a {
 /* Fix any potential z-index issues */
 .nav-container {
   z-index: 50;
+  height50px;
 }
