@@ -1,4 +1,5 @@
 "use client"
+
 import { Menu, X } from "lucide-react"
 import LanguageSwitcher from "@/components/language-switcher"
 import { useLanguage } from "@/contexts/language-context"
@@ -17,6 +18,7 @@ export default function Navigation() {
   })
 
   const handleNavClick = (sectionId: string) => {
+    console.log(`Navigating to section: ${sectionId}`) // Debug log
     navigateToSection(sectionId)
     setMobileMenuOpen(false) // Close mobile menu if open
   }
@@ -27,97 +29,215 @@ export default function Navigation() {
     { href: "#contact", label: t("nav.contact"), id: "contact" },
   ]
 
-  // Standardized dimensions for all interactive elements
-  const standardButtonClasses =
-    "h-11 min-w-[100px] px-4 py-2.5 rounded-lg font-medium text-sm " +
-    "flex items-center justify-center gap-2 " +
-    "transition-all duration-300 ease-out cursor-pointer group overflow-hidden " +
-    "border relative"
-
-  const activeStateClasses =
-    "text-white bg-white/10 backdrop-blur-sm shadow-lg border-white/20 " + "shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-
-  const inactiveStateClasses =
-    "text-white/80 border-transparent " +
-    "hover:text-white hover:bg-white/5 hover:backdrop-blur-sm " +
-    "hover:shadow-md hover:border-white/10 hover:scale-105 hover:-translate-y-0.5 " +
-    "hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]"
-
-  const getStandardButtonClassName = (sectionId?: string) => {
-    const isActive = sectionId && activeSection === sectionId
-    return `${standardButtonClasses} ${isActive ? activeStateClasses : inactiveStateClasses}`
+  // Base button styles - simplified and working
+  const baseButtonStyles = {
+    height: "44px",
+    minWidth: "100px",
+    padding: "0 16px",
+    borderRadius: "8px",
+    fontSize: "14px",
+    fontWeight: "500",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "8px",
+    cursor: "pointer",
+    border: "1px solid transparent",
+    position: "relative" as const,
+    overflow: "hidden",
+    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    textDecoration: "none",
+    outline: "none",
+    backgroundColor: "transparent",
   }
 
-  // Mobile button classes (slightly smaller for mobile)
-  const mobileButtonClasses =
-    "h-12 min-w-[120px] px-4 py-3 rounded-lg font-medium text-base " +
-    "flex items-center justify-center gap-2 " +
-    "transition-all duration-300 ease-out cursor-pointer group overflow-hidden " +
-    "border relative w-full"
+  const getButtonClassName = (isActive = false) => {
+    return `nav-button ${isActive ? "nav-button-active" : "nav-button-inactive"}`
+  }
 
-  const getMobileButtonClassName = (sectionId?: string) => {
-    const isActive = sectionId && activeSection === sectionId
-    return `${mobileButtonClasses} ${isActive ? activeStateClasses : inactiveStateClasses}`
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
   }
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-black/10 backdrop-blur-xl border-b border-white/10 shadow-2xl">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
-          {/* Portfolio/Logo Button */}
-          <button onClick={() => handleNavClick("hero")} className={`${getStandardButtonClassName("hero")} font-bold`}>
-            <span className="relative z-10 whitespace-nowrap">{t("nav.portfolio")}</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-          </button>
+    <>
+      <style jsx>{`
+        .nav-button {
+          height: 44px;
+          min-width: 100px;
+          padding: 0 16px;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          cursor: pointer;
+          border: 1px solid transparent;
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          text-decoration: none;
+          outline: none;
+          background: transparent;
+          white-space: nowrap;
+        }
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-3">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={getStandardButtonClassName(item.id)}
-              >
-                <span className="relative z-10 whitespace-nowrap">{item.label}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-              </button>
-            ))}
-            <LanguageSwitcher />
-          </div>
+        .nav-button-inactive {
+          color: rgba(255, 255, 255, 0.8);
+          border-color: transparent;
+        }
 
-          {/* Mobile Controls */}
-          <div className="md:hidden flex items-center gap-3">
-            <LanguageSwitcher />
+        .nav-button-inactive:hover {
+          color: white;
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.1);
+          transform: translateY(-2px) scale(1.05);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-button-active {
+          color: white;
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.2);
+          box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-button:active {
+          transform: translateY(0) scale(1.02);
+        }
+
+        .nav-button::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+          transition: left 0.5s;
+        }
+
+        .nav-button:hover::before {
+          left: 100%;
+        }
+
+        .mobile-nav-button {
+          height: 48px;
+          width: 100%;
+          min-width: 120px;
+          padding: 0 16px;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          cursor: pointer;
+          border: 1px solid transparent;
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          text-decoration: none;
+          outline: none;
+          background: transparent;
+          color: rgba(255, 255, 255, 0.8);
+          margin-bottom: 8px;
+        }
+
+        .mobile-nav-button:hover {
+          color: white;
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.1);
+          transform: scale(1.02);
+        }
+
+        .mobile-nav-button.active {
+          color: white;
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-menu {
+          background: rgba(0, 0, 0, 0.2);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          padding: 16px;
+          margin-top: 16px;
+        }
+
+        .nav-container {
+          background: rgba(0, 0, 0, 0.1);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+          .nav-button {
+            min-width: 80px;
+            padding: 0 12px;
+            font-size: 13px;
+          }
+        }
+      `}</style>
+
+      <nav className="fixed top-0 w-full z-50 nav-container">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            {/* Portfolio/Logo Button */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`${getStandardButtonClassName()} min-w-[50px]`}
+              onClick={() => handleNavClick("hero")}
+              className={`${getButtonClassName(activeSection === "hero")} font-bold`}
+              style={{ minWidth: "120px" }}
             >
-              <span className="relative z-10">
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+              {t("nav.portfolio")}
             </button>
-          </div>
-        </div>
 
-        {/* Mobile Navigation Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-white/10 backdrop-blur-xl bg-black/20 rounded-lg">
-            <div className="flex flex-col gap-3 pt-4 px-4">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center" style={{ gap: "12px" }}>
               {navItems.map((item) => (
                 <button
-                  key={`mobile-${item.id}`}
+                  key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={getMobileButtonClassName(item.id)}
+                  className={getButtonClassName(activeSection === item.id)}
                 >
-                  <span className="relative z-10 whitespace-nowrap">{item.label}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                  {item.label}
                 </button>
               ))}
+              <LanguageSwitcher />
+            </div>
+
+            {/* Mobile Controls */}
+            <div className="md:hidden flex items-center" style={{ gap: "12px" }}>
+              <LanguageSwitcher />
+              <button onClick={toggleMobileMenu} className={getButtonClassName()} style={{ minWidth: "44px" }}>
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
             </div>
           </div>
-        )}
-      </div>
-    </nav>
+
+          {/* Mobile Navigation Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mobile-menu">
+              <div className="flex flex-col">
+                {navItems.map((item) => (
+                  <button
+                    key={`mobile-${item.id}`}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`mobile-nav-button ${activeSection === item.id ? "active" : ""}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
+    </>
   )
 }
