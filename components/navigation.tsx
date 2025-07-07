@@ -135,6 +135,7 @@ export default function Navigation() {
           width: max-content;
           position: relative;
           overflow: hidden;
+          z-index: 9999;
         }
 
         .mobile-dropdown::before {
@@ -264,7 +265,7 @@ export default function Navigation() {
 
           {/* Mobile Navigation Menu */}
           {mobileMenuOpen && (
-            <div className="absolute top-full right-6 mt-2 md:hidden">
+            <div className="fixed top-20 right-6 md:hidden" style={{ zIndex: 9999 }}>
               <div className="mobile-dropdown">
                 <div className="flex flex-col min-w-max">
                   {navItems.map((item) => (
