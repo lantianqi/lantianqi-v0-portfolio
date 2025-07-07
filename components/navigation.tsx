@@ -125,7 +125,9 @@ export default function Navigation() {
 
         .mobile-dropdown {
           background: rgba(0, 0, 0, 0.1);
-          backdrop-filter: blur(40px);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
           -webkit-backdrop-filter: blur(40px);
           border: 1px solid rgba(255, 255, 255, 0.15);
           border-radius: 8px;
@@ -265,7 +267,7 @@ export default function Navigation() {
 
           {/* Mobile Navigation Menu */}
           {mobileMenuOpen && (
-            <div className="fixed top-20 right-6 md:hidden" style={{ zIndex: 9999 }}>
+            <div className="fixed top-20 right-6 md:hidden z-50">
               <div className="mobile-dropdown">
                 <div className="flex flex-col min-w-max">
                   {navItems.map((item) => (
