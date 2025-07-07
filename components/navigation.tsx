@@ -194,7 +194,6 @@ export default function Navigation() {
         .dropdown-content {
           background: transparent;
           backdrop-filter: blur(20px);
-          max-width: 100px;
         }
 
         @media (max-width: 768px) {
