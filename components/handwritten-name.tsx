@@ -61,6 +61,11 @@ export default function HandwrittenName({ name = "lantianqi", className = "" }: 
             </g>
           )
         })}
+        {/* Signature path added */}
+        <path
+          className="signature-path"
+          d="M20,50 Q50,20 80,50 T140,50 Q170,30 200,50 T260,50 Q290,70 320,50 T380,50"
+        />
       </svg>
     </div>
   )

@@ -1,9 +1,6 @@
 /* Handwritten Name Animation Styles */
 @keyframes draw {
-  0% {
-    stroke-dashoffset: 1000;
-  }
-  100% {
+  to {
     stroke-dashoffset: 0;
   }
 }
@@ -17,23 +14,27 @@
 }
 
 .handwritten-name {
-  width: 100%;
-  max-width: 800px;
-  height: auto;
+  display: inline-block;
   margin: 0 auto;
-  display: block;
 }
 
-.letter {
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  animation: draw 1.2s ease-in-out forwards;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+.handwritten-name svg {
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  filter: drop-shadow(0 4px 20px rgba(255, 255, 255, 0.1));
+}
+
+.handwritten-name .signature-path {
   fill: none;
   stroke: white;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw 3s ease-in-out forwards;
+  animation-delay: 0.5s;
 }
 
 /* Dynamic letter animations - each letter appears sequentially */
@@ -78,19 +79,23 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .handwritten-name {
-    max-width: 600px;
+  .handwritten-name svg {
+    max-width: 300px;
   }
 }
 
 @media (max-width: 480px) {
-  .handwritten-name {
-    max-width: 400px;
+  .handwritten-name svg {
+    max-width: 250px;
+  }
+
+  .handwritten-name .signature-path {
+    stroke-width: 1.5;
   }
 }
 
 /* Hover effects for interactive feel */
-.handwritten-name-container:hover .letter {
+.handwritten-name-container:hover .signature-path {
   filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
   transition: filter 0.3s ease;
 }
@@ -106,6 +111,6 @@
   }
 }
 
-.letter.completed {
+.signature-path.completed {
   animation: glow 2s ease-in-out infinite;
 }
