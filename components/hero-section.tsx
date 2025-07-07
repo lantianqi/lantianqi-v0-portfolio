@@ -52,7 +52,6 @@ export default function HeroSection() {
       </div>
 
       <div className="relative z-10 text-center px-6 w-full max-w-6xl mx-auto">
-        {/* Limelight Font Handwritten Name */}
         <div className="mb-8">
           <HandwrittenName name="lantianqi" className="mx-auto" />
 
