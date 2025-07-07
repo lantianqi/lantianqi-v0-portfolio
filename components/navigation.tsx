@@ -1,11 +1,11 @@
 "use client"
 
+import "./navigation.css"
 import { Menu, X } from "lucide-react"
 import LanguageSwitcher from "@/components/language-switcher"
 import { useLanguage } from "@/contexts/language-context"
 import { useScrollSpy } from "@/hooks/use-scroll-spy"
 import { useState } from "react"
-import "./navigation.css" // Import the CSS file
 
 export default function Navigation() {
   const { t } = useLanguage()
@@ -19,9 +19,9 @@ export default function Navigation() {
   })
 
   const handleNavClick = (sectionId: string) => {
-    console.log(`Navigating to section: ${sectionId}`) // Debug log
+    console.log(`Navigating to section: ${sectionId}`)
     navigateToSection(sectionId)
-    setMobileMenuOpen(false) // Close mobile menu if open
+    setMobileMenuOpen(false)
   }
 
   const navItems = [
@@ -29,28 +29,6 @@ export default function Navigation() {
     { href: "#projects", label: t("nav.projects"), id: "projects" },
     { href: "#contact", label: t("nav.contact"), id: "contact" },
   ]
-
-  // Base button styles - simplified and working
-  const baseButtonStyles = {
-    height: "44px",
-    minWidth: "100px",
-    padding: "0 16px",
-    borderRadius: "8px",
-    fontSize: "14px",
-    fontWeight: "500",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    cursor: "pointer",
-    border: "1px solid transparent",
-    position: "relative" as const,
-    overflow: "hidden",
-    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-    textDecoration: "none",
-    outline: "none",
-    backgroundColor: "transparent",
-  }
 
   const getButtonClassName = (isActive = false) => {
     return `nav-button ${isActive ? "nav-button-active" : "nav-button-inactive"}`
@@ -61,8 +39,8 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="fixed top-0 w-full z-50 nav-container">
-      <div className="container mx-auto px-6 py-4">
+    <nav className="nav-container">
+      <div className="nav-content">
         <div className="flex justify-between items-center">
           {/* Portfolio/Logo Button */}
           <button
@@ -96,21 +74,19 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Navigation Menu - Now properly positioned within nav-container */}
         {mobileMenuOpen && (
-          <div className="fixed top-20 right-6 md:hidden z-60">
-            <div className="mobile-dropdown">
-              <div className="flex flex-col min-w-max">
-                {navItems.map((item) => (
-                  <button
-                    key={`mobile-${item.id}`}
-                    onClick={() => handleNavClick(item.id)}
-                    className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+          <div className="mobile-dropdown">
+            <div className="flex flex-col min-w-max">
+              {navItems.map((item) => (
+                <button
+                  key={`mobile-${item.id}`}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
           </div>
         )}

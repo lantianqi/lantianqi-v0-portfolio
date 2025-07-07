@@ -1,5 +1,7 @@
 "use client"
 
+import "./handwritten-name.css"
+
 interface HandwrittenNameProps {
   name?: string
   className?: string
@@ -55,15 +57,7 @@ export default function HandwrittenName({ name = "lantianqi", className = "" }: 
 
           return (
             <g key={`${letter}-${index}`} transform={`translate(${startX + letterPositions[index]}, 5)`}>
-              <path
-                d={path}
-                className={`letter letter-${index + 1}`}
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d={path} className={`letter letter-${index + 1}`} />
             </g>
           )
         })}

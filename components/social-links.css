@@ -1,0 +1,16 @@
+/* Social Links Styles */
+.social-links-container {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.social-link {
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.3s;
+  padding: 0.5rem;
+}
+
+.social-link:hover {
+  color: white;
+}
