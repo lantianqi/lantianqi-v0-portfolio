@@ -7,7 +7,6 @@
   align-items: center;
 }
 
-/* Responsive Design */
 @media (min-width: 640px) {
   .cta-buttons-container {
     flex-direction: row;

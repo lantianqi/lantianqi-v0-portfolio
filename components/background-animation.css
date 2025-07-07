@@ -18,20 +18,19 @@
   border-radius: 50%;
   mix-blend-mode: multiply;
   filter: blur(40px);
+  animation: blob 7s infinite;
 }
 
 .background-blob-1 {
   top: 25%;
   left: 25%;
   background-color: rgb(168 85 247);
-  animation: blob 7s infinite;
 }
 
 .background-blob-2 {
   top: 33.333333%;
   right: 25%;
   background-color: rgb(234 179 8);
-  animation: blob 7s infinite;
   animation-delay: 2s;
 }
 
@@ -39,7 +38,6 @@
   bottom: 25%;
   left: 33.333333%;
   background-color: rgb(236 72 153);
-  animation: blob 7s infinite;
   animation-delay: 4s;
 }
 

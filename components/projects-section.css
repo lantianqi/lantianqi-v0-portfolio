@@ -26,12 +26,18 @@
   gap: 2rem;
 }
 
+@media (min-width: 768px) {
+  .projects-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .project-card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
   border-radius: 0.5rem;
   padding: 1.5rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 
 .project-card:hover {
@@ -41,7 +47,7 @@
 
 .project-image {
   height: 10rem;
-  background: linear-gradient(to bottom right, rgb(196 181 253), rgb(251 207 232));
+  background: linear-gradient(to bottom right, rgb(168 85 247), rgb(236 72 153));
   border-radius: 0.5rem;
   margin-bottom: 1rem;
 }
@@ -55,11 +61,4 @@
 
 .project-description {
   color: rgba(255, 255, 255, 0.7);
-}
-
-/* Responsive Design */
-@media (min-width: 768px) {
-  .projects-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }

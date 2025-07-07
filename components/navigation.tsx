@@ -11,7 +11,7 @@ export default function Navigation() {
   const { t } = useLanguage()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  // Track active section for highlighting - fix the hook usage
+  // Track active section for highlighting
   const { activeSection, navigateToSection } = useScrollSpy({
     sections: ["hero", "about", "projects", "contact"],
     offset: 100,
@@ -30,42 +30,45 @@ export default function Navigation() {
     { href: "#contact", label: t("nav.contact"), id: "contact" },
   ]
 
+  const getButtonClassName = (isActive = false) => {
+    return `nav-button ${isActive ? "nav-button-active" : "nav-button-inactive"}`
+  }
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
   }
 
   return (
     <nav className="nav-container">
-      <div className="nav-inner">
-        <div className="flex justify-between items-center w-full">
+      <div className="nav-content">
+        <div className="flex justify-between items-center">
           {/* Portfolio/Logo Button */}
           <button
             onClick={() => handleNavClick("hero")}
-            className={`nav-link font-bold nav-portfolio-button ${activeSection === "hero" ? "active" : ""}`}
+            className={`${getButtonClassName(activeSection === "hero")} font-bold`}
+            style={{ minWidth: "120px" }}
           >
             {t("nav.portfolio")}
           </button>
 
           {/* Desktop Navigation */}
-          <div className="nav-desktop">
+          <div className="hidden md:flex items-center" style={{ gap: "12px" }}>
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`nav-link ${activeSection === item.id ? "active" : ""}`}
+                className={getButtonClassName(activeSection === item.id)}
               >
                 {item.label}
               </button>
             ))}
-            <div className="nav-language-switcher">
-              <LanguageSwitcher />
-            </div>
+            <LanguageSwitcher />
           </div>
 
           {/* Mobile Controls */}
-          <div className="nav-mobile-container">
+          <div className="md:hidden flex items-center" style={{ gap: "12px" }}>
             <LanguageSwitcher />
-            <button onClick={toggleMobileMenu} className="nav-mobile-button">
+            <button onClick={toggleMobileMenu} className={getButtonClassName()} style={{ minWidth: "44px" }}>
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
@@ -74,19 +77,16 @@ export default function Navigation() {
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
           <div className="mobile-dropdown">
-            <div className="mobile-dropdown-inner">
+            <div className="flex flex-col min-w-max">
               {navItems.map((item) => (
                 <button
                   key={`mobile-${item.id}`}
                   onClick={() => handleNavClick(item.id)}
-                  className={`mobile-nav-link ${activeSection === item.id ? "active" : ""}`}
+                  className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
                 >
                   {item.label}
                 </button>
               ))}
-              <div className="mobile-language-switcher">
-                <LanguageSwitcher />
-              </div>
             </div>
           </div>
         )}
