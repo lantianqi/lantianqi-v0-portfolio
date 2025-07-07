@@ -220,146 +220,42 @@
   }
 }
 
-/* CRITICAL: Enhanced smooth scrolling for better backdrop-filter performance */
+/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-  /* Force hardware acceleration globally */
-  transform: translateZ(0);
 }
 
-/* CRITICAL: Optimized scrollbar that won't interfere with backdrop-filter */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
-  /* Ensure scrollbar doesn't create stacking context issues */
-  z-index: 999999;
 }
 
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.1);
-  /* Prevent backdrop-filter interference */
-  backdrop-filter: none;
 }
 
 ::-webkit-scrollbar-thumb {
   background: rgba(147, 51, 234, 0.5);
   border-radius: 4px;
-  /* Prevent backdrop-filter interference */
-  backdrop-filter: none;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(147, 51, 234, 0.7);
 }
 
-/* CRITICAL: Enhanced button focus states for accessibility without blur interference */
+/* Enhanced button focus states for accessibility */
 button:focus-visible {
   outline: 2px solid rgba(147, 51, 234, 0.8);
   outline-offset: 2px;
-  /* Prevent outline from interfering with backdrop-filter */
-  z-index: auto;
 }
 
-/* CRITICAL: Ensure all interactive elements don't interfere with backdrop-filter */
+/* Ensure all interactive elements are properly styled */
 button,
 a {
   -webkit-tap-highlight-color: transparent;
-  /* Force hardware acceleration for better backdrop-filter performance */
-  transform: translateZ(0);
 }
 
-/* CRITICAL: Global backdrop-filter optimization */
-* {
-  /* Prevent unnecessary backdrop-filter inheritance */
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-/* CRITICAL: Body optimization for backdrop-filter performance */
-body {
-  /* Ensure body doesn't interfere with backdrop-filter stacking */
-  position: relative;
-  z-index: 0;
-  /* Force hardware acceleration */
-  transform: translateZ(0);
-  will-change: auto;
-  /* Add top padding to account for fixed navigation */
-  padding-top: 80px;
-}
-
-/* CRITICAL: Root container optimization */
-#__next,
-[data-nextjs-scroll-focus-boundary] {
-  /* Ensure Next.js containers don't interfere */
-  position: relative;
-  z-index: 0;
-  transform: translateZ(0);
-}
-
-/* CRITICAL: Prevent Tailwind utilities from interfering with backdrop-filter */
-.backdrop-blur-none {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* CRITICAL: Performance optimization for backdrop-filter elements */
-[class*="backdrop-"],
-.nav-container,
-.mobile-dropdown {
-  /* Force GPU acceleration */
-  transform: translateZ(0);
-  will-change: backdrop-filter;
-  /* Prevent subpixel rendering issues */
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* CRITICAL: Navigation positioning fixes */
+/* Fix any potential z-index issues */
 .nav-container {
-  /* Force navigation to stay at top with highest priority */
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 9999 !important;
-  width: 100vw !important;
-}
-
-/* Prevent any element from going above navigation */
-* {
-  z-index: auto;
-}
-
-/* Specific z-index hierarchy */
-.nav-container {
-  z-index: 9999 !important;
-}
-
-.mobile-dropdown {
-  z-index: 10000 !important;
-}
-
-/* Ensure main content starts below navigation */
-main,
-section,
-#hero {
-  position: relative;
-  z-index: 1;
-}
-
-/* Fix any potential stacking context issues */
-[data-nextjs-scroll-focus-boundary],
-#__next {
-  position: relative;
-  z-index: 0;
-}
-
-/* Prevent Tailwind utilities from overriding navigation positioning */
-.fixed {
-  position: fixed !important;
-}
-
-/* Ensure navigation container takes full width */
-.nav-container .container {
-  max-width: none !important;
-  width: 100% !important;
+  z-index: 1000;
 }

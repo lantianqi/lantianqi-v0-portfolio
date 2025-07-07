@@ -22,6 +22,14 @@ export default function LandingPage() {
     }
   }, [])
 
+  // Add body padding for fixed navigation
+  useEffect(() => {
+    document.body.style.paddingTop = "80px"
+    return () => {
+      document.body.style.paddingTop = ""
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <Navigation />

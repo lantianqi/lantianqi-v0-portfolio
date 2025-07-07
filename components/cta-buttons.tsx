@@ -1,5 +1,6 @@
 "use client"
 
+import "./cta-buttons.css"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 
@@ -13,7 +14,7 @@ export default function CTAButtons({ className = "", onViewWork, onGetInTouch }:
   const { t } = useLanguage()
 
   return (
-    <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${className}`}>
+    <div className={`cta-buttons-container ${className}`}>
       <Button
         size="lg"
         className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 px-8 py-3"

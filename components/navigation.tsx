@@ -41,7 +41,9 @@ export default function Navigation() {
           {/* Portfolio/Logo Button */}
           <button
             onClick={() => handleNavClick("hero")}
-            className={`nav-button font-bold ${activeSection === "hero" ? "nav-button-active" : "nav-button-inactive"}`}
+            className={`nav-button font-bold nav-portfolio-button ${
+              activeSection === "hero" ? "nav-button-active" : "nav-button-inactive"
+            }`}
           >
             {t("nav.portfolio")}
           </button>

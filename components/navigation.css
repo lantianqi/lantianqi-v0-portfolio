@@ -43,16 +43,6 @@
   z-index: 1;
 }
 
-/* Desktop navigation container */
-.nav-desktop-container {
-  gap: 12px;
-}
-
-/* Mobile navigation container */
-.nav-mobile-container {
-  gap: 12px;
-}
-
 /* Mobile dropdown - even higher z-index */
 .mobile-dropdown {
   /* CRITICAL: Higher z-index than nav-container */
@@ -185,11 +175,6 @@
   left: 100%;
 }
 
-/* Mobile toggle button specific styles */
-.nav-mobile-toggle {
-  min-width: 44px;
-}
-
 /* Mobile dropdown buttons */
 .mobile-dropdown-button {
   height: 48px;
@@ -241,6 +226,26 @@
   border-color: rgba(255, 255, 255, 0.4);
   box-shadow: 0 2px 12px rgba(255, 255, 255, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+/* Desktop navigation container */
+.nav-desktop-container {
+  gap: 12px;
+}
+
+/* Mobile navigation container */
+.nav-mobile-container {
+  gap: 12px;
+}
+
+/* Mobile toggle button specific styles */
+.nav-mobile-toggle {
+  min-width: 44px;
+}
+
+/* Portfolio button specific styles */
+.nav-portfolio-button {
+  min-width: 120px;
 }
 
 /* Responsive adjustments */
