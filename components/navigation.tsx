@@ -123,18 +123,26 @@ export default function Navigation() {
           left: 100%;
         }
 
-        .mobile-nav-button {
-          height: 48px;
-          width: 100%;
-          min-width: 120px;
-          padding: 0 16px;
+        .mobile-dropdown {
+          background: rgba(0, 0, 0, 0.2);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 8px;
-          font-size: 16px;
+          padding: 8px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          min-width: 120px;
+          width: max-content;
+        }
+
+        .mobile-dropdown-button {
+          height: 40px;
+          padding: 0 16px;
+          border-radius: 6px;
+          font-size: 14px;
           font-weight: 500;
           display: flex;
           align-items: center;
-          justify-content: center;
-          gap: 8px;
+          justify-content: flex-start;
           cursor: pointer;
           border: 1px solid transparent;
           position: relative;
@@ -144,29 +152,48 @@ export default function Navigation() {
           outline: none;
           background: transparent;
           color: rgba(255, 255, 255, 0.8);
-          margin-bottom: 8px;
+          margin-bottom: 4px;
+          white-space: nowrap;
+          text-align: left;
+          width: 100%;
         }
 
-        .mobile-nav-button:hover {
+        .mobile-dropdown-button:last-child {
+          margin-bottom: 0;
+        }
+
+        .mobile-dropdown-button:hover {
           color: white;
           background: rgba(255, 255, 255, 0.05);
           border-color: rgba(255, 255, 255, 0.1);
-          transform: scale(1.02);
+          transform: translateY(-1px) scale(1.02);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .mobile-nav-button.active {
+        .mobile-dropdown-button:active {
+          transform: translateY(0) scale(1.01);
+        }
+
+        .mobile-dropdown-button.active {
           color: white;
           background: rgba(255, 255, 255, 0.1);
           border-color: rgba(255, 255, 255, 0.2);
+          box-shadow: 0 2px 12px rgba(255, 255, 255, 0.1);
         }
 
-        .mobile-menu {
-          background: rgba(0, 0, 0, 0.2);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
-          padding: 16px;
-          margin-top: 16px;
+        .mobile-dropdown-button::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+          transition: left 0.5s;
+        }
+
+        .mobile-dropdown-button:hover::before {
+          left: 100%;
         }
 
         .nav-container {
@@ -222,17 +249,19 @@ export default function Navigation() {
 
           {/* Mobile Navigation Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden mobile-menu">
-              <div className="flex flex-col">
-                {navItems.map((item) => (
-                  <button
-                    key={`mobile-${item.id}`}
-                    onClick={() => handleNavClick(item.id)}
-                    className={`mobile-nav-button ${activeSection === item.id ? "active" : ""}`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
+            <div className="absolute top-full right-6 mt-2 md:hidden">
+              <div className="mobile-dropdown">
+                <div className="flex flex-col min-w-max">
+                  {navItems.map((item) => (
+                    <button
+                      key={`mobile-${item.id}`}
+                      onClick={() => handleNavClick(item.id)}
+                      className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
