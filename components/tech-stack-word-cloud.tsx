@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useMemo, useRef, useEffect } from "react"
+import { useState, useMemo, useCallback } from "react"
 import { useLanguage } from "@/contexts/language-context"
+import ReactWordcloud from "react-wordcloud"
 
 interface Skill {
   name: string
@@ -14,24 +15,16 @@ interface TechStackWordCloudProps {
   skills: Skill[]
 }
 
-interface WordCloudItem {
-  name: string
-  proficiency: number
+interface WordCloudWord {
+  text: string
+  value: number
   type: string
-  x: number
-  y: number
-  width: number
-  height: number
-  scale: number
-  colorClass: string
-  fontSize: number
+  proficiency: number
 }
 
 export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) {
   const { t } = useLanguage()
   const [selectedTypes, setSelectedTypes] = useState<string[]>([])
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [containerDimensions, setContainerDimensions] = useState({ width: 800, height: 400 })
 
   // Get unique skill types
   const skillTypes = useMemo(() => {
@@ -55,154 +48,67 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
     setSelectedTypes([])
   }
 
-  // Update container dimensions
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect()
-        setContainerDimensions({ width: rect.width, height: rect.height })
-      }
-    }
+  // Transform skills to word cloud format
+  const words: WordCloudWord[] = useMemo(() => {
+    return filteredSkills.map((skill) => ({
+      text: skill.name,
+      value: skill.proficiency * 20, // Scale proficiency to word cloud size
+      type: skill.type,
+      proficiency: skill.proficiency,
+    }))
+  }, [filteredSkills])
 
-    updateDimensions()
-    window.addEventListener("resize", updateDimensions)
-    return () => window.removeEventListener("resize", updateDimensions)
+  // Color function based on skill type
+  const getColor = useCallback((word: WordCloudWord) => {
+    const colors = {
+      Frontend: "#60A5FA", // blue-400
+      Backend: "#4ADE80", // green-400
+      Database: "#A78BFA", // purple-400
+      DevOps: "#FB923C", // orange-400
+      Mobile: "#F472B6", // pink-400
+      Tools: "#FBBF24", // yellow-400
+      Languages: "#F87171", // red-400
+    }
+    return colors[word.type as keyof typeof colors] || "#9CA3AF" // gray-400
   }, [])
 
-  // Collision detection function
-  const checkCollision = (item1: WordCloudItem, item2: WordCloudItem): boolean => {
-    const padding = 8 // Minimum space between words
+  // Word cloud options
+  const options = useMemo(
+    () => ({
+      colors: [getColor],
+      enableTooltip: true,
+      deterministic: true,
+      fontFamily: "Inter, system-ui, sans-serif",
+      fontSizes: [16, 60] as [number, number],
+      fontStyle: "normal",
+      fontWeight: "bold",
+      padding: 8,
+      rotations: 0, // No rotation for better readability
+      rotationAngles: [0, 0] as [number, number],
+      scale: "sqrt" as const,
+      spiral: "archimedean" as const,
+      transitionDuration: 500,
+    }),
+    [getColor],
+  )
 
-    const left1 = item1.x - item1.width / 2 - padding
-    const right1 = item1.x + item1.width / 2 + padding
-    const top1 = item1.y - item1.height / 2 - padding
-    const bottom1 = item1.y + item1.height / 2 + padding
+  // Tooltip callback
+  const getWordTooltip = useCallback(
+    (word: WordCloudWord) => {
+      return `${word.text} - ${t("techStack.proficiency")}: ${word.proficiency}/5 (${word.type})`
+    },
+    [t],
+  )
 
-    const left2 = item2.x - item2.width / 2 - padding
-    const right2 = item2.x + item2.width / 2 + padding
-    const top2 = item2.y - item2.height / 2 - padding
-    const bottom2 = item2.y + item2.height / 2 + padding
+  // Word click callback
+  const onWordClick = useCallback((word: WordCloudWord) => {
+    console.log(`Clicked on ${word.text}`)
+  }, [])
 
-    return !(right1 < left2 || left1 > right2 || bottom1 < top2 || top1 > bottom2)
-  }
-
-  // Check if item is within container bounds
-  const isWithinBounds = (item: WordCloudItem): boolean => {
-    const margin = 20
-    const left = item.x - item.width / 2
-    const right = item.x + item.width / 2
-    const top = item.y - item.height / 2
-    const bottom = item.y + item.height / 2
-
-    return (
-      left >= margin &&
-      right <= containerDimensions.width - margin &&
-      top >= margin &&
-      bottom <= containerDimensions.height - margin
-    )
-  }
-
-  // Find non-overlapping position using spiral algorithm
-  const findNonOverlappingPosition = (
-    item: WordCloudItem,
-    placedItems: WordCloudItem[],
-    centerX: number,
-    centerY: number,
-  ): { x: number; y: number } => {
-    const maxAttempts = 500
-    const spiralStep = 5
-    let angle = 0
-    let radius = 0
-
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const x = centerX + Math.cos(angle) * radius
-      const y = centerY + Math.sin(angle) * radius
-
-      const testItem = { ...item, x, y }
-
-      // Check if position is within bounds and doesn't collide
-      if (isWithinBounds(testItem) && !placedItems.some((placedItem) => checkCollision(testItem, placedItem))) {
-        return { x, y }
-      }
-
-      // Update spiral parameters
-      angle += 0.5
-      radius += spiralStep * 0.1
-    }
-
-    // Fallback to original position if no suitable position found
-    return { x: centerX, y: centerY }
-  }
-
-  // Generate word cloud with collision detection
-  const wordCloudItems = useMemo(() => {
-    const centerX = containerDimensions.width / 2
-    const centerY = containerDimensions.height / 2
-    const placedItems: WordCloudItem[] = []
-
-    // Color mapping
-    const colors = {
-      Frontend: "text-blue-400",
-      Backend: "text-green-400",
-      Database: "text-purple-400",
-      DevOps: "text-orange-400",
-      Mobile: "text-pink-400",
-      Tools: "text-yellow-400",
-      Languages: "text-red-400",
-    }
-
-    // Sort skills by proficiency (highest first) for better placement
-    const sortedSkills = [...filteredSkills].sort((a, b) => b.proficiency - a.proficiency)
-
-    sortedSkills.forEach((skill, index) => {
-      // Calculate size based on proficiency
-      const sizeScale = 0.8 + (skill.proficiency - 1) * 0.4
-      const fontSize = 14 + skill.proficiency * 6
-
-      // Estimate text dimensions (approximate)
-      const charWidth = fontSize * 0.6
-      const estimatedWidth = skill.name.length * charWidth * sizeScale
-      const estimatedHeight = fontSize * sizeScale * 1.2
-
-      // Initial position attempt (center for first item, then spiral outward)
-      let initialX = centerX
-      let initialY = centerY
-
-      if (index > 0) {
-        // Use golden angle for better distribution
-        const angle = (index * 137.5) % 360
-        const radius = Math.min(50 + index * 8, Math.min(containerDimensions.width, containerDimensions.height) / 3)
-        initialX = centerX + Math.cos((angle * Math.PI) / 180) * radius
-        initialY = centerY + Math.sin((angle * Math.PI) / 180) * radius
-      }
-
-      const initialItem: WordCloudItem = {
-        name: skill.name,
-        proficiency: skill.proficiency,
-        type: skill.type,
-        x: initialX,
-        y: initialY,
-        width: estimatedWidth,
-        height: estimatedHeight,
-        scale: sizeScale,
-        fontSize,
-        colorClass: colors[skill.type as keyof typeof colors] || "text-gray-400",
-      }
-
-      // Find non-overlapping position
-      const { x, y } = findNonOverlappingPosition(initialItem, placedItems, centerX, centerY)
-
-      const finalItem: WordCloudItem = {
-        ...initialItem,
-        x,
-        y,
-      }
-
-      placedItems.push(finalItem)
-    })
-
-    return placedItems
-  }, [filteredSkills, containerDimensions])
+  // Word hover callback
+  const onWordMouseOver = useCallback((word: WordCloudWord) => {
+    // Optional: Add hover effects
+  }, [])
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -240,44 +146,22 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
       </div>
 
       {/* Word Cloud */}
-      <div
-        ref={containerRef}
-        className="relative w-full h-96 bg-black/20 rounded-2xl backdrop-blur-sm border border-white/10 overflow-hidden"
-      >
-        <div className="absolute inset-0">
-          {wordCloudItems.map((item, index) => (
-            <div
-              key={`${item.name}-${selectedTypes.join("-")}-${index}`}
-              className="absolute transition-all duration-700 ease-out cursor-pointer hover:scale-110 hover:z-10"
-              style={{
-                left: `${item.x}px`,
-                top: `${item.y}px`,
-                transform: `translate(-50%, -50%) scale(${item.scale})`,
-                fontSize: `${item.fontSize}px`,
-                animationDelay: `${index * 100}ms`,
+      <div className="relative w-full h-96 bg-black/20 rounded-2xl backdrop-blur-sm border border-white/10 overflow-hidden">
+        {words.length > 0 ? (
+          <div className="w-full h-full p-4">
+            <ReactWordcloud
+              words={words}
+              options={options}
+              callbacks={{
+                getWordTooltip,
+                onWordClick,
+                onWordMouseOver,
               }}
-            >
-              <span
-                className={`font-bold ${item.colorClass} hover:text-white transition-colors duration-200 whitespace-nowrap select-none drop-shadow-lg`}
-                title={`${item.name} - ${t("techStack.proficiency")}: ${item.proficiency}/5`}
-              >
-                {item.name}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Empty state */}
-        {filteredSkills.length === 0 && (
+            />
+          </div>
+        ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <p className="text-white/50 text-lg">{t("techStack.noSkillsFound")}</p>
-          </div>
-        )}
-
-        {/* Loading indicator for repositioning */}
-        {wordCloudItems.length === 0 && filteredSkills.length > 0 && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white/50"></div>
           </div>
         )}
       </div>
@@ -304,6 +188,13 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
             )
           })}
         </div>
+      </div>
+
+      {/* Instructions */}
+      <div className="mt-4 text-center">
+        <p className="text-white/50 text-xs">
+          {t("techStack.instructions")} • {t("techStack.sizeNote")}
+        </p>
       </div>
     </div>
   )
