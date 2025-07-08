@@ -4,15 +4,17 @@ import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import LanguageSwitcher from "./language-switcher"
+import { useScrollSpy } from "@/hooks/use-scroll-spy"
 
 export default function Navigation() {
   const { t } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const activeSection = useScrollSpy(["hero", "about", "projects", "contact"])
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 50)
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -35,44 +37,52 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-black/80 backdrop-blur-md border-b border-white/10" : "bg-transparent"
+      className={`nav-container fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-black/20 backdrop-blur-md border-b border-white/10" : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <button
-              onClick={() => scrollToSection("#hero")}
-              className="text-2xl font-bold text-white hover:text-purple-400 transition-colors"
+          <div className="text-2xl font-bold text-white">
+            <a
+              href="#hero"
+              onClick={(e) => {
+                e.preventDefault()
+                scrollToSection("#hero")
+              }}
             >
               {t("nav.portfolio")}
-            </button>
+            </a>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.href}
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-white/80 hover:text-white px-3 py-2 text-sm font-medium transition-colors duration-200 hover:bg-white/10 rounded-lg"
-                >
-                  {item.label}
-                </button>
-              ))}
-              <LanguageSwitcher />
-            </div>
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection(item.href)
+                }}
+                className={`text-white/80 hover:text-white transition-colors duration-200 ${
+                  activeSection === item.href.slice(1) ? "text-white font-medium" : ""
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+            <LanguageSwitcher />
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-4">
             <LanguageSwitcher />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white hover:text-purple-400 transition-colors p-2"
+              className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+              aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -81,13 +91,15 @@ export default function Navigation() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/90 backdrop-blur-md rounded-lg mt-2 border border-white/10">
+          <div className="mobile-dropdown md:hidden mt-4 pb-4">
+            <div className="dropdown-content flex flex-col min-w-max bg-transparent">
               {navItems.map((item) => (
                 <button
                   key={item.href}
                   onClick={() => scrollToSection(item.href)}
-                  className="text-white/80 hover:text-white block px-3 py-2 text-base font-medium w-full text-left hover:bg-white/10 rounded-lg transition-colors"
+                  className={`mobile-dropdown-button w-32 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 text-right justify-end ml-auto ${
+                    activeSection === item.href.slice(1) ? "text-white bg-white/10" : ""
+                  }`}
                 >
                   {item.label}
                 </button>

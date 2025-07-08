@@ -1,5 +1,7 @@
 "use client"
 
+import { useLanguage } from "@/contexts/language-context"
+
 interface HandwrittenNameProps {
   name?: string
   className?: string
@@ -26,6 +28,8 @@ const letterWidths = {
 }
 
 export default function HandwrittenName({ name = "lantianqi", className = "" }: HandwrittenNameProps) {
+  const { t } = useLanguage()
+
   // Convert name to uppercase and split into letters
   const letters = name.toUpperCase().split("")
 
@@ -43,6 +47,9 @@ export default function HandwrittenName({ name = "lantianqi", className = "" }: 
 
   return (
     <div className={`handwritten-name-container ${className}`}>
+      <h2 className="handwritten-name text-5xl md:text-7xl lg:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+        {t("hero.name")}
+      </h2>
       <svg viewBox={`0 0 ${totalWidth + 20} 70`} className="handwritten-name" xmlns="http://www.w3.org/2000/svg">
         {letters.map((letter, index) => {
           const letterKey = letter as keyof typeof letterPaths

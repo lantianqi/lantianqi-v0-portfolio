@@ -6,22 +6,12 @@ export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage()
 
   return (
-    <div className="flex items-center space-x-1 bg-white/10 rounded-lg p-1">
+    <div className="language-switcher">
       <button
-        onClick={() => setLanguage("en")}
-        className={`px-3 py-1 text-sm font-medium rounded transition-all duration-200 ${
-          language === "en" ? "bg-white text-black" : "text-white/70 hover:text-white hover:bg-white/10"
-        }`}
+        onClick={() => setLanguage(language === "en" ? "zh" : "en")}
+        className="language-button px-3 py-1 text-sm text-white/80 hover:text-white border border-white/20 hover:border-white/40 rounded-full transition-all duration-200"
       >
-        EN
-      </button>
-      <button
-        onClick={() => setLanguage("zh")}
-        className={`px-3 py-1 text-sm font-medium rounded transition-all duration-200 ${
-          language === "zh" ? "bg-white text-black" : "text-white/70 hover:text-white hover:bg-white/10"
-        }`}
-      >
-        中文
+        {language === "en" ? "中文" : "EN"}
       </button>
     </div>
   )

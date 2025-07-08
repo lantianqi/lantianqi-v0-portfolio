@@ -45,16 +45,39 @@ export default function BackgroundAnimation() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       particles.forEach((particle) => {
+        // Update position
         particle.x += particle.vx
         particle.y += particle.vy
 
-        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1
-        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1
+        // Wrap around edges
+        if (particle.x < 0) particle.x = canvas.width
+        if (particle.x > canvas.width) particle.x = 0
+        if (particle.y < 0) particle.y = canvas.height
+        if (particle.y > canvas.height) particle.y = 0
 
+        // Draw particle
         ctx.beginPath()
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(147, 51, 234, ${particle.opacity})`
+        ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`
         ctx.fill()
+      })
+
+      // Draw connections
+      particles.forEach((particle, i) => {
+        particles.slice(i + 1).forEach((otherParticle) => {
+          const dx = particle.x - otherParticle.x
+          const dy = particle.y - otherParticle.y
+          const distance = Math.sqrt(dx * dx + dy * dy)
+
+          if (distance < 100) {
+            ctx.beginPath()
+            ctx.moveTo(particle.x, particle.y)
+            ctx.lineTo(otherParticle.x, otherParticle.y)
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - distance / 100)})`
+            ctx.lineWidth = 0.5
+            ctx.stroke()
+          }
+        })
       })
 
       requestAnimationFrame(animate)
@@ -67,5 +90,7 @@ export default function BackgroundAnimation() {
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 1 }} />
+  return (
+    <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" style={{ background: "transparent" }} />
+  )
 }

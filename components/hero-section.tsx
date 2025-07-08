@@ -1,71 +1,43 @@
 "use client"
 
 import { useLanguage } from "@/contexts/language-context"
-import { ArrowDown, Github, Linkedin, Mail } from "lucide-react"
+import HandwrittenName from "./handwritten-name"
+import CTAButtons from "./cta-buttons"
+import SocialLinks from "./social-links"
 
 export default function HeroSection() {
   const { t } = useLanguage()
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
-  }
-
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-4xl mx-auto text-center">
-        <div className="mb-8">
-          <p className="text-xl md:text-2xl text-purple-400 mb-4">{t("hero.greeting")}</p>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">{t("hero.name")}</h1>
-          <h2 className="text-2xl md:text-4xl font-semibold text-white/90 mb-6">{t("hero.title")}</h2>
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">{t("hero.subtitle")}</p>
-        </div>
+    <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <div className="container mx-auto px-6 text-center z-10">
+        <div className="max-w-4xl mx-auto">
+          {/* Greeting */}
+          <p className="text-xl md:text-2xl text-white/80 mb-4 animate-fade-in">{t("hero.greeting")}</p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <button
-            onClick={() => scrollToSection("#projects")}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105"
-          >
-            {t("hero.cta.projects")}
-          </button>
-          <button
-            onClick={() => scrollToSection("#contact")}
-            className="border border-white/30 text-white hover:bg-white/10 px-8 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105"
-          >
-            {t("hero.cta.contact")}
-          </button>
-        </div>
+          {/* Name */}
+          <div className="mb-6">
+            <HandwrittenName />
+          </div>
 
-        <div className="flex justify-center space-x-6 mb-12">
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/60 hover:text-white transition-colors p-2"
-          >
-            <Github size={24} />
-          </a>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/60 hover:text-white transition-colors p-2"
-          >
-            <Linkedin size={24} />
-          </a>
-          <a href="mailto:contact@example.com" className="text-white/60 hover:text-white transition-colors p-2">
-            <Mail size={24} />
-          </a>
-        </div>
+          {/* Title */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in-up">
+            {t("hero.title")}
+          </h1>
 
-        <button
-          onClick={() => scrollToSection("#about")}
-          className="text-white/60 hover:text-white transition-colors animate-bounce"
-        >
-          <ArrowDown size={32} />
-        </button>
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in-up">
+            {t("hero.subtitle")}
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="mb-12">
+            <CTAButtons />
+          </div>
+
+          {/* Social Links */}
+          <SocialLinks />
+        </div>
       </div>
     </section>
   )

@@ -66,6 +66,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     box-sizing: border-box;
     padding: 0;
@@ -76,6 +80,127 @@
     color: rgb(var(--foreground-rgb));
     background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
     padding-top: 80px;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  .nav-container {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1000;
+  }
+
+  .mobile-dropdown {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .handwritten-name-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .handwritten-name {
+    width: 100%;
+    max-width: 900px;
+    height: 200px;
+    font-family: "Brush Script MT", cursive;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .letter {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw 0.8s ease-in-out forwards;
+  }
+
+  /* Sequential letter animations */
+  .letter-1 {
+    animation-delay: 0.2s;
+  }
+  .letter-2 {
+    animation-delay: 0.6s;
+  }
+  .letter-3 {
+    animation-delay: 1.0s;
+  }
+  .letter-4 {
+    animation-delay: 1.4s;
+  }
+  .letter-5 {
+    animation-delay: 1.8s;
+  }
+  .letter-6 {
+    animation-delay: 2.2s;
+  }
+  .letter-7 {
+    animation-delay: 2.6s;
+  }
+  .letter-8 {
+    animation-delay: 3.0s;
+  }
+  .letter-9 {
+    animation-delay: 3.4s;
+  }
+
+  .animated-underline {
+    width: 0;
+    animation: drawUnderline 1.5s ease-in-out 5.5s;
+    animation-fill-mode: both;
+  }
+
+  /* Typewriter Effect Styles */
+  .typewriter-container {
+    line-height: 1.4;
+    min-height: 1.4em; /* Prevent layout shift */
+  }
+
+  .typewriter-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .typewriter-cursor {
+    color: white;
+    font-weight: normal;
+    vertical-align: baseline;
+  }
+
+  .language-switcher {
+    position: relative;
+  }
+
+  .language-button {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 1s ease-in-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.8s ease-out;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out;
   }
 }
 
@@ -124,6 +249,15 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -135,195 +269,62 @@
   }
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
   }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
-
-.animate-blink {
-  animation: blink 1s infinite;
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Handwritten Name Styles */
-.handwritten-name-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.handwritten-name {
-  width: 100%;
-  max-width: 900px;
-  height: 200px;
-}
-
-.letter {
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  animation: draw 0.8s ease-in-out forwards;
-}
-
-/* Sequential letter animations */
-.letter-1 {
-  animation-delay: 0.2s;
-}
-.letter-2 {
-  animation-delay: 0.6s;
-}
-.letter-3 {
-  animation-delay: 1.0s;
-}
-.letter-4 {
-  animation-delay: 1.4s;
-}
-.letter-5 {
-  animation-delay: 1.8s;
-}
-.letter-6 {
-  animation-delay: 2.2s;
-}
-.letter-7 {
-  animation-delay: 2.6s;
-}
-.letter-8 {
-  animation-delay: 3.0s;
-}
-.letter-9 {
-  animation-delay: 3.4s;
-}
-
-.animated-underline {
-  width: 0;
-  animation: drawUnderline 1.5s ease-in-out 5.5s;
-  animation-fill-mode: both;
-}
-
-/* Typewriter Effect Styles */
-.typewriter-container {
-  line-height: 1.4;
-  min-height: 1.4em; /* Prevent layout shift */
-}
-
-.typewriter-text {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-}
-
-.typewriter-cursor {
-  color: white;
-  font-weight: normal;
-  vertical-align: baseline;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .handwritten-name {
-    max-width: 700px;
-    height: 150px;
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
   }
-  .animated-underline {
-    animation: drawUnderline 1.5s ease-in-out 5.5s;
-    animation-fill-mode: both;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-@media (max-width: 480px) {
-  .handwritten-name {
-    max-width: 500px;
-    height: 120px;
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(147, 51, 234, 0.3);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(147, 51, 234, 0.6);
   }
 }
 
-/* Smooth scrolling */
-/* Custom scrollbar */
+/* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.3);
 }
 
-/* Enhanced button focus states for accessibility */
-button:focus-visible {
-  outline: 2px solid rgba(147, 51, 234, 0.8);
-  outline-offset: 2px;
+/* Selection Styling */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
 }
 
-/* Ensure all interactive elements are properly styled */
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Fix any potential z-index issues */
-.nav-container {
-  z-index: 1000;
-}
-
-/* Backdrop blur fallback */
-.backdrop-blur-fallback {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-@supports (backdrop-filter: blur(10px)) {
-  .backdrop-blur-fallback {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+::-moz-selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
 }

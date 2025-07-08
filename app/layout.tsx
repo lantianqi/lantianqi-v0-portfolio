@@ -7,7 +7,35 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Lantianqi - Full Stack Developer",
-  description: "Portfolio of Lantianqi, a passionate full-stack developer specializing in modern web technologies.",
+  description: "Passionate full-stack developer creating innovative web solutions with modern technologies.",
+  keywords: ["developer", "full-stack", "web development", "React", "Next.js", "TypeScript"],
+  authors: [{ name: "Lantianqi" }],
+  creator: "Lantianqi",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://lantianqi.dev",
+    title: "Lantianqi - Full Stack Developer",
+    description: "Passionate full-stack developer creating innovative web solutions with modern technologies.",
+    siteName: "Lantianqi Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lantianqi - Full Stack Developer",
+    description: "Passionate full-stack developer creating innovative web solutions with modern technologies.",
+    creator: "@lantianqi",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
     generator: 'v0.dev'
 }
 
