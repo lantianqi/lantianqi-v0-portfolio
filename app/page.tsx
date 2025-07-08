@@ -5,6 +5,7 @@ import HeroSection from "@/components/hero-section"
 import AboutSection from "@/components/about-section"
 import ProjectsSection from "@/components/projects-section"
 import ContactSection from "@/components/contact-section"
+import { LanguageProvider } from "@/contexts/language-context"
 import { useEffect } from "react"
 
 export default function LandingPage() {
@@ -23,12 +24,14 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <Navigation />
-      <HeroSection />
-      <AboutSection />
-      <ProjectsSection />
-      <ContactSection />
-    </div>
+    <LanguageProvider>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <Navigation />
+        <HeroSection />
+        <AboutSection />
+        <ProjectsSection />
+        <ContactSection />
+      </div>
+    </LanguageProvider>
   )
 }
