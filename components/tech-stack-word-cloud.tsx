@@ -2,7 +2,17 @@
 
 import { useState, useMemo, useCallback } from "react"
 import { useLanguage } from "@/contexts/language-context"
-import ReactWordcloud from "react-wordcloud"
+import dynamic from "next/dynamic"
+
+// Dynamically import ReactWordcloud to avoid SSR issues
+const ReactWordcloud = dynamic(() => import("react-wordcloud"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white/50"></div>
+    </div>
+  ),
+})
 
 interface Skill {
   name: string
@@ -18,8 +28,8 @@ interface TechStackWordCloudProps {
 interface WordCloudWord {
   text: string
   value: number
-  type: string
-  proficiency: number
+  type?: string
+  proficiency?: number
 }
 
 export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) {
@@ -28,12 +38,14 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
 
   // Get unique skill types
   const skillTypes = useMemo(() => {
+    if (!skills || skills.length === 0) return []
     const types = Array.from(new Set(skills.map((skill) => skill.type)))
     return types
   }, [skills])
 
   // Filter skills based on selected types
   const filteredSkills = useMemo(() => {
+    if (!skills || skills.length === 0) return []
     if (selectedTypes.length === 0) return skills
     return skills.filter((skill) => selectedTypes.includes(skill.type))
   }, [skills, selectedTypes])
@@ -50,9 +62,11 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
 
   // Transform skills to word cloud format
   const words: WordCloudWord[] = useMemo(() => {
+    if (!filteredSkills || filteredSkills.length === 0) return []
+
     return filteredSkills.map((skill) => ({
       text: skill.name,
-      value: skill.proficiency * 20, // Scale proficiency to word cloud size
+      value: Math.max(skill.proficiency * 15, 10), // Ensure minimum size and scale proficiency
       type: skill.type,
       proficiency: skill.proficiency,
     }))
@@ -79,15 +93,15 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
       enableTooltip: true,
       deterministic: true,
       fontFamily: "Inter, system-ui, sans-serif",
-      fontSizes: [16, 60] as [number, number],
+      fontSizes: [14, 48] as [number, number],
       fontStyle: "normal",
       fontWeight: "bold",
-      padding: 8,
-      rotations: 0, // No rotation for better readability
-      rotationAngles: [0, 0] as [number, number],
+      padding: 6,
+      rotations: 1,
+      rotationAngles: [0] as [number],
       scale: "sqrt" as const,
       spiral: "archimedean" as const,
-      transitionDuration: 500,
+      transitionDuration: 300,
     }),
     [getColor],
   )
@@ -105,10 +119,18 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
     console.log(`Clicked on ${word.text}`)
   }, [])
 
-  // Word hover callback
-  const onWordMouseOver = useCallback((word: WordCloudWord) => {
-    // Optional: Add hover effects
-  }, [])
+  // Early return if no skills
+  if (!skills || skills.length === 0) {
+    return (
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="relative w-full h-96 bg-black/20 rounded-2xl backdrop-blur-sm border border-white/10 overflow-hidden">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-white/50 text-lg">{t("techStack.noSkillsFound")}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -147,7 +169,7 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
 
       {/* Word Cloud */}
       <div className="relative w-full h-96 bg-black/20 rounded-2xl backdrop-blur-sm border border-white/10 overflow-hidden">
-        {words.length > 0 ? (
+        {words && words.length > 0 ? (
           <div className="w-full h-full p-4">
             <ReactWordcloud
               words={words}
@@ -155,7 +177,6 @@ export default function TechStackWordCloud({ skills }: TechStackWordCloudProps) 
               callbacks={{
                 getWordTooltip,
                 onWordClick,
-                onWordMouseOver,
               }}
             />
           </div>
