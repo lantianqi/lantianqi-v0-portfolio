@@ -1,264 +1,101 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
-import LanguageSwitcher from "@/components/language-switcher"
 import { useLanguage } from "@/contexts/language-context"
-import { useScrollSpy } from "@/hooks/use-scroll-spy"
-import { useState } from "react"
+import LanguageSwitcher from "./language-switcher"
 
 export default function Navigation() {
   const { t } = useLanguage()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
-  // Track active section for highlighting
-  const { activeSection, navigateToSection } = useScrollSpy({
-    sections: ["hero", "about", "projects", "contact"],
-    offset: 100,
-    updateUrl: true,
-  })
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
 
-  const handleNavClick = (sectionId: string) => {
-    console.log(`Navigating to section: ${sectionId}`) // Debug log
-    navigateToSection(sectionId)
-    setMobileMenuOpen(false) // Close mobile menu if open
-  }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const navItems = [
-    { href: "#about", label: t("nav.about"), id: "about" },
-    { href: "#projects", label: t("nav.projects"), id: "projects" },
-    { href: "#contact", label: t("nav.contact"), id: "contact" },
+    { href: "#about", label: t("nav.about") },
+    { href: "#projects", label: t("nav.projects") },
+    { href: "#contact", label: t("nav.contact") },
   ]
 
-  const getButtonClassName = (isActive = false) => {
-    return `nav-button ${isActive ? "nav-button-active" : "nav-button-inactive"}`
-  }
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+    setIsOpen(false)
   }
 
   return (
-    <>
-      <style jsx>{`
-        .nav-button {
-          height: 44px;
-          min-width: 100px;
-          padding: 0 16px;
-          border-radius: 8px;
-          font-size: 14px;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          cursor: pointer;
-          border: 1px solid transparent;
-          position: relative;
-          overflow: hidden;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          text-decoration: none;
-          outline: none;
-          background: transparent;
-          white-space: nowrap;
-        }
-
-        .nav-button-inactive {
-          color: rgba(255, 255, 255, 0.8);
-          border-color: transparent;
-        }
-
-        .nav-button-inactive:hover {
-          color: white;
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(255, 255, 255, 0.1);
-          transform: translateY(-2px) scale(1.05);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .nav-button-active {
-          color: white;
-          background: rgba(255, 255, 255, 0.1);
-          border-color: rgba(255, 255, 255, 0.2);
-          box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-button:active {
-          transform: translateY(0) scale(1.02);
-        }
-
-        .nav-button::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-          transition: left 0.5s;
-        }
-
-        .nav-button:hover::before {
-          left: 100%;
-        }
-
-        .mobile-dropdown {
-          background: transparent;
-          padding: 8px;
-          min-width: 120px;
-          width: 100%;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .mobile-dropdown::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          pointer-events: none;
-          border-radius: inherit;
-        }
-
-        .mobile-dropdown-button {
-          height: 40px;
-          width: 120px;
-          padding: 0 16px;
-          border-radius: 6px;
-          font-size: 14px;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          border: 1px solid transparent;
-          position: relative;
-          overflow: hidden;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          text-decoration: none;
-          outline: none;
-          background: transparent;
-          color: rgba(255, 255, 255, 0.8);
-          margin-bottom: 4px;
-          white-space: nowrap;
-          text-align: right;
-          margin-left: auto;
-        }
-
-        .mobile-dropdown-button:last-child {
-          margin-bottom: 0;
-        }
-
-        .mobile-dropdown-button:hover {
-          color: white;
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(255, 255, 255, 0.1);
-          transform: translateY(-1px) scale(1.02);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .mobile-dropdown-button:active {
-          transform: translateY(0) scale(1.01);
-        }
-
-        .mobile-dropdown-button.active {
-          color: white;
-          background: rgba(255, 255, 255, 0.1);
-          border-color: rgba(255, 255, 255, 0.2);
-          box-shadow: 0 2px 12px rgba(255, 255, 255, 0.1);
-        }
-
-        .mobile-dropdown-button::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-          transition: left 0.5s;
-        }
-
-        .mobile-dropdown-button:hover::before {
-          left: 100%;
-        }
-
-        .nav-container {
-          background: rgba(0, 0, 0, 0.1);
-          backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .dropdown-content {
-          background: transparent;
-        }
-
-        @media (max-width: 768px) {
-          .nav-button {
-            min-width: 80px;
-            padding: 0 12px;
-            font-size: 13px;
-          }
-        }
-      `}</style>
-
-      <nav className="fixed top-0 w-full z-50 nav-container">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            {/* Portfolio/Logo Button */}
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-black/80 backdrop-blur-md border-b border-white/10" : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0">
             <button
-              onClick={() => handleNavClick("hero")}
-              className={`${getButtonClassName(activeSection === "hero")} font-bold`}
-              style={{ minWidth: "120px" }}
+              onClick={() => scrollToSection("#hero")}
+              className="text-2xl font-bold text-white hover:text-purple-400 transition-colors"
             >
               {t("nav.portfolio")}
             </button>
+          </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center" style={{ gap: "12px" }}>
+          {/* Desktop Navigation */}
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-8">
               {navItems.map((item) => (
                 <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={getButtonClassName(activeSection === item.id)}
+                  key={item.href}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-white/80 hover:text-white px-3 py-2 text-sm font-medium transition-colors duration-200 hover:bg-white/10 rounded-lg"
                 >
                   {item.label}
                 </button>
               ))}
               <LanguageSwitcher />
             </div>
-
-            {/* Mobile Controls */}
-            <div className="md:hidden flex items-center" style={{ gap: "12px" }}>
-              <LanguageSwitcher />
-              <button onClick={toggleMobileMenu} className={getButtonClassName()} style={{ minWidth: "44px" }}>
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
-            </div>
           </div>
 
-          {/* Mobile Navigation Menu - Now inside nav-container */}
-          {mobileMenuOpen && (
-            <div className="mt-4 md:hidden">
-              <div className="mobile-dropdown">
-                <div className="dropdown-content flex flex-col min-w-max">
-                  {navItems.map((item) => (
-                    <button
-                      key={`mobile-${item.id}`}
-                      onClick={() => handleNavClick(item.id)}
-                      className={`mobile-dropdown-button ${activeSection === item.id ? "active" : ""}`}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-4">
+            <LanguageSwitcher />
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white hover:text-purple-400 transition-colors p-2"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
-      </nav>
-    </>
+
+        {/* Mobile Navigation */}
+        {isOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/90 backdrop-blur-md rounded-lg mt-2 border border-white/10">
+              {navItems.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-white/80 hover:text-white block px-3 py-2 text-base font-medium w-full text-left hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
   )
 }

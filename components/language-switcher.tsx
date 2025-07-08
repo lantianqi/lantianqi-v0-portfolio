@@ -1,24 +1,28 @@
 "use client"
 
-import { Globe } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
-import "./language-switcher.css"
 
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage()
 
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "zh" : "en")
-  }
-
   return (
-    <button
-      onClick={toggleLanguage}
-      className="language-switcher"
-      aria-label={`Switch to ${language === "en" ? "Chinese" : "English"}`}
-    >
-      <Globe size={16} className="language-icon" />
-      <span className="language-text">{language === "en" ? "中文" : "EN"}</span>
-    </button>
+    <div className="flex items-center space-x-1 bg-white/10 rounded-lg p-1">
+      <button
+        onClick={() => setLanguage("en")}
+        className={`px-3 py-1 text-sm font-medium rounded transition-all duration-200 ${
+          language === "en" ? "bg-white text-black" : "text-white/70 hover:text-white hover:bg-white/10"
+        }`}
+      >
+        EN
+      </button>
+      <button
+        onClick={() => setLanguage("zh")}
+        className={`px-3 py-1 text-sm font-medium rounded transition-all duration-200 ${
+          language === "zh" ? "bg-white text-black" : "text-white/70 hover:text-white hover:bg-white/10"
+        }`}
+      >
+        中文
+      </button>
+    </div>
   )
 }

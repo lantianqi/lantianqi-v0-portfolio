@@ -7,11 +7,11 @@ export default function AboutSection() {
   const { t } = useLanguage()
 
   return (
-    <section id="about" className="py-20 px-6">
-      <div className="container mx-auto max-w-4xl">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-white mb-6">{t("about.title")}</h2>
-          <p className="text-xl text-white/80 leading-relaxed max-w-2xl mx-auto">{t("about.description")}</p>
+    <section id="about" className="relative py-20 px-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{t("about.title")}</h2>
+          <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">{t("about.description")}</p>
         </div>
 
         {/* Tech Stack Word Cloud */}

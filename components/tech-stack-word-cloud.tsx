@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { useLanguage } from "@/contexts/language-context"
 
@@ -79,6 +79,11 @@ const typeColors: { [key: string]: string } = {
 export default function TechStackWordCloud() {
   const { t } = useLanguage()
   const [selectedType, setSelectedType] = useState("All")
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const filteredSkills = useMemo(() => {
     if (selectedType === "All") {
@@ -88,41 +93,70 @@ export default function TechStackWordCloud() {
   }, [selectedType])
 
   const words: WordCloudWord[] = useMemo(() => {
+    if (!filteredSkills || filteredSkills.length === 0) {
+      return []
+    }
     return filteredSkills.map((skill) => ({
       text: skill.name,
       value: Math.max(skill.proficiency * 15, 10), // Ensure minimum size
     }))
   }, [filteredSkills])
 
-  const options = {
-    colors: [typeColors[selectedType] || "#6B7280"],
-    enableTooltip: true,
-    deterministic: true,
-    fontFamily: "Inter, sans-serif",
-    fontSizes: [16, 60] as [number, number],
-    fontStyle: "normal",
-    fontWeight: "normal",
-    padding: 8,
-    rotations: 0,
-    rotationAngles: [0, 0] as [number, number],
-    scale: "sqrt" as const,
-    spiral: "archimedean" as const,
-    transitionDuration: 500,
+  const options = useMemo(
+    () => ({
+      colors: ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#F97316", "#06B6D4"],
+      enableTooltip: true,
+      deterministic: true,
+      fontFamily: "Inter, sans-serif",
+      fontSizes: [16, 60] as [number, number],
+      fontStyle: "normal",
+      fontWeight: "normal",
+      padding: 8,
+      rotations: 0,
+      rotationAngles: [0, 0] as [number, number],
+      scale: "sqrt" as const,
+      spiral: "archimedean" as const,
+      transitionDuration: 500,
+    }),
+    [],
+  )
+
+  const callbacks = useMemo(
+    () => ({
+      onWordClick: (word: any) => {
+        console.log(`Clicked on: ${word.text}`)
+      },
+      onWordMouseOver: (word: any) => {
+        console.log(`Hovered: ${word.text}`)
+      },
+    }),
+    [],
+  )
+
+  // Don't render until client-side
+  if (!isClient) {
+    return (
+      <div className="w-full">
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold text-white mb-4">Technical Skills</h3>
+          <div className="flex items-center justify-center h-96 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
-  const callbacks = {
-    onWordClick: (word: any) => {
-      console.log(`Clicked on: ${word.text}`)
-    },
-    onWordMouseOver: (word: any) => {
-      console.log(`Hovered: ${word.text}`)
-    },
-  }
-
+  // Don't render word cloud if no words
   if (!words || words.length === 0) {
     return (
-      <div className="flex items-center justify-center h-96 text-white/60">
-        <p>No skills to display</p>
+      <div className="w-full">
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold text-white mb-4">{t("about.skills.title")}</h3>
+          <div className="flex items-center justify-center h-96 text-white/60 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
+            <p>No skills to display</p>
+          </div>
+        </div>
       </div>
     )
   }
@@ -148,15 +182,14 @@ export default function TechStackWordCloud() {
                 backgroundColor: selectedType === type ? `${typeColors[type]}20` : undefined,
               }}
             >
-              {t(`about.skills.${type.toLowerCase()}`) || type}
+              {type === "All" ? "All Skills" : type}
             </button>
           ))}
         </div>
 
         {/* Skills Count */}
         <p className="text-white/60 text-sm mb-4">
-          {t("about.skills.showing")} {filteredSkills.length} {t("about.skills.of")} {skillsData.length}{" "}
-          {t("about.skills.skills")}
+          Showing {filteredSkills.length} of {skillsData.length} skills
         </p>
       </div>
 
@@ -165,7 +198,7 @@ export default function TechStackWordCloud() {
         className="relative bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-6"
         style={{ height: "400px" }}
       >
-        <ReactWordcloud words={words} options={options} callbacks={callbacks} />
+        {words.length > 0 && <ReactWordcloud words={words} options={options} callbacks={callbacks} />}
       </div>
     </div>
   )

@@ -1,110 +1,71 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Github, Linkedin, Mail, ArrowDown } from "lucide-react"
-import Link from "next/link"
-import HandwrittenName from "@/components/handwritten-name"
 import { useLanguage } from "@/contexts/language-context"
-import { useEffect, useState } from "react"
-import "@/components/handwritten-name.css"
+import { ArrowDown, Github, Linkedin, Mail } from "lucide-react"
 
 export default function HeroSection() {
   const { t } = useLanguage()
-  const [displayedText, setDisplayedText] = useState("")
-  const [showCursor, setShowCursor] = useState(false)
-  const [isTypingComplete, setIsTypingComplete] = useState(false)
 
-  const fullText = t("hero.subtitle")
-
-  useEffect(() => {
-    // Start typing animation after handwritten name animation completes
-    const startDelay = 6500 // 6.5 seconds to match the original timing
-
-    const startTyping = setTimeout(() => {
-      setShowCursor(true)
-      let currentIndex = 0
-
-      const typeInterval = setInterval(() => {
-        if (currentIndex < fullText.length) {
-          setDisplayedText(fullText.slice(0, currentIndex + 1))
-          currentIndex++
-        } else {
-          clearInterval(typeInterval)
-          setIsTypingComplete(true)
-        }
-      }, 80) // Adjust speed as needed (80ms per character)
-
-      return () => clearInterval(typeInterval)
-    }, startDelay)
-
-    return () => clearTimeout(startTyping)
-  }, [fullText])
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
   return (
-    <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Animation */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -inset-10 opacity-50">
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-          <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
-        </div>
-      </div>
-
-      <div className="relative z-10 text-center px-6 w-full max-w-6xl mx-auto">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center px-6">
+      <div className="max-w-4xl mx-auto text-center">
         <div className="mb-8">
-          <HandwrittenName name="lantianqi" className="mx-auto" />
-
-          {/* Animated underline */}
-          <div className="flex justify-center">
-            <div className="h-1 bg-gradient-to-r from-purple-400 to-pink-400 animated-underline w-full"></div>
-          </div>
+          <p className="text-xl md:text-2xl text-purple-400 mb-4">{t("hero.greeting")}</p>
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">{t("hero.name")}</h1>
+          <h2 className="text-2xl md:text-4xl font-semibold text-white/90 mb-6">{t("hero.title")}</h2>
+          <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">{t("hero.subtitle")}</p>
         </div>
 
-        {/* Subtitle with typewriter effect */}
-        <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto px-4">
-          <span className="typewriter-container inline-block max-w-full text-left">
-            <span className="typewriter-text break-words">{displayedText}</span>
-            <span className={`typewriter-cursor inline-block ml-1 ${showCursor ? "animate-blink" : "opacity-0"}`}>
-              |
-            </span>
-          </span>
-        </p>
-
-        {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 px-8 py-3"
+          <button
+            onClick={() => scrollToSection("#projects")}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105"
           >
-            {t("hero.viewWork")}
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-white/30 text-white hover:bg-white/10 px-8 py-3 bg-transparent"
+            {t("hero.cta.projects")}
+          </button>
+          <button
+            onClick={() => scrollToSection("#contact")}
+            className="border border-white/30 text-white hover:bg-white/10 px-8 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105"
           >
-            {t("hero.getInTouch")}
-          </Button>
+            {t("hero.cta.contact")}
+          </button>
         </div>
 
-        {/* Social Links */}
         <div className="flex justify-center space-x-6 mb-12">
-          <Link href="#" className="text-white/60 hover:text-white transition-colors p-2">
-            <Github className="w-6 h-6" />
-          </Link>
-          <Link href="#" className="text-white/60 hover:text-white transition-colors p-2">
-            <Linkedin className="w-6 h-6" />
-          </Link>
-          <Link href="#" className="text-white/60 hover:text-white transition-colors p-2">
-            <Mail className="w-6 h-6" />
-          </Link>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/60 hover:text-white transition-colors p-2"
+          >
+            <Github size={24} />
+          </a>
+          <a
+            href="https://linkedin.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/60 hover:text-white transition-colors p-2"
+          >
+            <Linkedin size={24} />
+          </a>
+          <a href="mailto:contact@example.com" className="text-white/60 hover:text-white transition-colors p-2">
+            <Mail size={24} />
+          </a>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="animate-bounce">
-          <ArrowDown className="w-6 h-6 text-white/60 mx-auto" />
-        </div>
+        <button
+          onClick={() => scrollToSection("#about")}
+          className="text-white/60 hover:text-white transition-colors animate-bounce"
+        >
+          <ArrowDown size={32} />
+        </button>
       </div>
     </section>
   )
