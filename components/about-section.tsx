@@ -4,14 +4,14 @@ import { useLanguage } from "@/contexts/language-context"
 import TechStackWordCloud from "./tech-stack-word-cloud"
 
 export default function AboutSection() {
-  const { translations } = useLanguage()
+  const { t } = useLanguage()
 
   return (
-    <section id="about" className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">{translations.about.title}</h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">{translations.about.description}</p>
+    <section id="about" className="py-20 px-6">
+      <div className="container mx-auto max-w-4xl">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-white mb-6">{t("about.title")}</h2>
+          <p className="text-xl text-white/80 leading-relaxed max-w-2xl mx-auto">{t("about.description")}</p>
         </div>
 
         {/* Tech Stack Word Cloud */}

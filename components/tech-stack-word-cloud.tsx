@@ -1,16 +1,15 @@
 "use client"
 
-import type React from "react"
 import { useState, useMemo } from "react"
 import dynamic from "next/dynamic"
 import { useLanguage } from "@/contexts/language-context"
 
-// Dynamic import to prevent SSR issues
+// Dynamically import ReactWordcloud to avoid SSR issues
 const ReactWordcloud = dynamic(() => import("react-wordcloud"), {
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center h-96">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
     </div>
   ),
 })
@@ -26,73 +25,83 @@ interface WordCloudWord {
   value: number
 }
 
-const TechStackWordCloud: React.FC = () => {
-  const { language, translations } = useLanguage()
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+const skillsData: Skill[] = [
+  // Frontend
+  { name: "React", proficiency: 5, type: "Frontend" },
+  { name: "Vue.js", proficiency: 4, type: "Frontend" },
+  { name: "TypeScript", proficiency: 5, type: "Frontend" },
+  { name: "JavaScript", proficiency: 5, type: "Frontend" },
+  { name: "HTML5", proficiency: 5, type: "Frontend" },
+  { name: "CSS3", proficiency: 5, type: "Frontend" },
+  { name: "Tailwind CSS", proficiency: 4, type: "Frontend" },
+  { name: "Next.js", proficiency: 4, type: "Frontend" },
+  { name: "Nuxt.js", proficiency: 3, type: "Frontend" },
 
-  // Sample skills data - replace with your actual skills
-  const skills: Skill[] = [
-    { name: "React", proficiency: 5, type: "Frontend" },
-    { name: "TypeScript", proficiency: 5, type: "Languages" },
-    { name: "Next.js", proficiency: 4, type: "Frontend" },
-    { name: "Node.js", proficiency: 4, type: "Backend" },
-    { name: "Python", proficiency: 4, type: "Languages" },
-    { name: "JavaScript", proficiency: 5, type: "Languages" },
-    { name: "PostgreSQL", proficiency: 4, type: "Database" },
-    { name: "MongoDB", proficiency: 3, type: "Database" },
-    { name: "Docker", proficiency: 3, type: "DevOps" },
-    { name: "AWS", proficiency: 3, type: "DevOps" },
-    { name: "Vue.js", proficiency: 3, type: "Frontend" },
-    { name: "Express.js", proficiency: 4, type: "Backend" },
-    { name: "GraphQL", proficiency: 3, type: "Backend" },
-    { name: "Redis", proficiency: 3, type: "Database" },
-    { name: "Kubernetes", proficiency: 2, type: "DevOps" },
-    { name: "React Native", proficiency: 3, type: "Mobile" },
-    { name: "Flutter", proficiency: 2, type: "Mobile" },
-    { name: "Git", proficiency: 5, type: "Tools" },
-    { name: "Webpack", proficiency: 3, type: "Tools" },
-    { name: "Jest", proficiency: 4, type: "Tools" },
-  ]
+  // Backend
+  { name: "Node.js", proficiency: 5, type: "Backend" },
+  { name: "Express.js", proficiency: 4, type: "Backend" },
+  { name: "Python", proficiency: 4, type: "Backend" },
+  { name: "Django", proficiency: 3, type: "Backend" },
+  { name: "FastAPI", proficiency: 3, type: "Backend" },
+  { name: "Java", proficiency: 3, type: "Backend" },
+  { name: "Spring Boot", proficiency: 3, type: "Backend" },
 
-  const skillTypes = Array.from(new Set(skills.map((skill) => skill.type)))
+  // Database
+  { name: "MongoDB", proficiency: 4, type: "Database" },
+  { name: "PostgreSQL", proficiency: 4, type: "Database" },
+  { name: "MySQL", proficiency: 4, type: "Database" },
+  { name: "Redis", proficiency: 3, type: "Database" },
+
+  // DevOps
+  { name: "Docker", proficiency: 4, type: "DevOps" },
+  { name: "AWS", proficiency: 3, type: "DevOps" },
+  { name: "Vercel", proficiency: 4, type: "DevOps" },
+  { name: "Netlify", proficiency: 3, type: "DevOps" },
+
+  // Tools
+  { name: "Git", proficiency: 5, type: "Tools" },
+  { name: "VS Code", proficiency: 5, type: "Tools" },
+  { name: "Figma", proficiency: 3, type: "Tools" },
+  { name: "Postman", proficiency: 4, type: "Tools" },
+]
+
+const skillTypes = ["All", "Frontend", "Backend", "Database", "DevOps", "Tools"]
+
+const typeColors: { [key: string]: string } = {
+  Frontend: "#3B82F6",
+  Backend: "#10B981",
+  Database: "#F59E0B",
+  DevOps: "#EF4444",
+  Tools: "#8B5CF6",
+  All: "#6B7280",
+}
+
+export default function TechStackWordCloud() {
+  const { t } = useLanguage()
+  const [selectedType, setSelectedType] = useState("All")
 
   const filteredSkills = useMemo(() => {
-    if (selectedTypes.length === 0) return skills
-    return skills.filter((skill) => selectedTypes.includes(skill.type))
-  }, [selectedTypes])
+    if (selectedType === "All") {
+      return skillsData
+    }
+    return skillsData.filter((skill) => skill.type === selectedType)
+  }, [selectedType])
 
   const words: WordCloudWord[] = useMemo(() => {
     return filteredSkills.map((skill) => ({
       text: skill.name,
-      value: Math.max(10, skill.proficiency * 15), // Ensure minimum value and scale
+      value: Math.max(skill.proficiency * 15, 10), // Ensure minimum size
     }))
   }, [filteredSkills])
 
-  const handleTypeToggle = (type: string) => {
-    setSelectedTypes((prev) => (prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]))
-  }
-
-  const getTypeColor = (type: string) => {
-    const colors: Record<string, string> = {
-      Frontend: "#3B82F6",
-      Backend: "#10B981",
-      Database: "#F59E0B",
-      DevOps: "#EF4444",
-      Mobile: "#8B5CF6",
-      Languages: "#06B6D4",
-      Tools: "#F97316",
-    }
-    return colors[type] || "#6B7280"
-  }
-
-  const wordCloudOptions = {
-    colors: ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#06B6D4", "#F97316"],
+  const options = {
+    colors: [typeColors[selectedType] || "#6B7280"],
     enableTooltip: true,
     deterministic: true,
     fontFamily: "Inter, sans-serif",
     fontSizes: [16, 60] as [number, number],
-    fontStyle: "normal" as const,
-    fontWeight: "normal" as const,
+    fontStyle: "normal",
+    fontWeight: "normal",
     padding: 8,
     rotations: 0,
     rotationAngles: [0, 0] as [number, number],
@@ -101,77 +110,63 @@ const TechStackWordCloud: React.FC = () => {
     transitionDuration: 500,
   }
 
-  // Handle empty data
+  const callbacks = {
+    onWordClick: (word: any) => {
+      console.log(`Clicked on: ${word.text}`)
+    },
+    onWordMouseOver: (word: any) => {
+      console.log(`Hovered: ${word.text}`)
+    },
+  }
+
   if (!words || words.length === 0) {
     return (
-      <div className="w-full max-w-4xl mx-auto p-6">
-        <div className="text-center text-gray-400">
-          <p>{translations.techStack?.noSkills || "No skills to display"}</p>
-        </div>
+      <div className="flex items-center justify-center h-96 text-white/60">
+        <p>No skills to display</p>
       </div>
     )
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6">
+    <div className="w-full">
       <div className="mb-6">
-        <h3 className="text-xl font-semibold text-white mb-4">{translations.techStack?.title || "Technical Skills"}</h3>
+        <h3 className="text-xl font-semibold text-white mb-4">{t("about.skills.title")}</h3>
 
-        {/* Filter Controls */}
+        {/* Filter Buttons */}
         <div className="flex flex-wrap gap-2 mb-4">
           {skillTypes.map((type) => (
             <button
               key={type}
-              onClick={() => handleTypeToggle(type)}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                selectedTypes.includes(type) ? "text-white shadow-lg" : "bg-white/10 text-gray-300 hover:bg-white/20"
+              onClick={() => setSelectedType(type)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                selectedType === type
+                  ? "bg-white/20 text-white border border-white/30"
+                  : "bg-white/5 text-white/70 border border-white/10 hover:bg-white/10 hover:text-white"
               }`}
               style={{
-                backgroundColor: selectedTypes.includes(type) ? getTypeColor(type) : undefined,
+                borderColor: selectedType === type ? typeColors[type] : undefined,
+                backgroundColor: selectedType === type ? `${typeColors[type]}20` : undefined,
               }}
             >
-              {type}
+              {t(`about.skills.${type.toLowerCase()}`) || type}
             </button>
           ))}
-          {selectedTypes.length > 0 && (
-            <button
-              onClick={() => setSelectedTypes([])}
-              className="px-3 py-1 rounded-full text-sm font-medium bg-gray-600 text-white hover:bg-gray-500 transition-colors"
-            >
-              {translations.techStack?.clearFilters || "Clear All"}
-            </button>
-          )}
         </div>
 
-        {/* Skills Counter */}
-        <p className="text-sm text-gray-400 mb-4">
-          {translations.techStack?.showingSkills || "Showing"} {filteredSkills.length}{" "}
-          {translations.techStack?.of || "of"} {skills.length} {translations.techStack?.skills || "skills"}
+        {/* Skills Count */}
+        <p className="text-white/60 text-sm mb-4">
+          {t("about.skills.showing")} {filteredSkills.length} {t("about.skills.of")} {skillsData.length}{" "}
+          {t("about.skills.skills")}
         </p>
       </div>
 
       {/* Word Cloud */}
-      <div className="relative bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-        <div style={{ height: "400px", width: "100%" }}>
-          <ReactWordcloud words={words} options={wordCloudOptions} />
-        </div>
+      <div
+        className="relative bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-6"
+        style={{ height: "400px" }}
+      >
+        <ReactWordcloud words={words} options={options} callbacks={callbacks} />
       </div>
-
-      {/* Legend */}
-      <div className="mt-4 flex flex-wrap gap-4 justify-center">
-        {skillTypes.map((type) => (
-          <div key={type} className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: getTypeColor(type) }} />
-            <span className="text-sm text-gray-300">{type}</span>
-          </div>
-        ))}
-      </div>
-
-      <p className="text-center text-sm text-gray-400 mt-4">
-        {translations.techStack?.instruction || "Click on categories above to filter skills"}
-      </p>
     </div>
   )
 }
-
-export default TechStackWordCloud

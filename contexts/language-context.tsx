@@ -1,162 +1,111 @@
 "use client"
 
-import type React from "react"
 import { createContext, useContext, useState, type ReactNode } from "react"
 
 type Language = "en" | "zh"
 
 interface Translations {
-  nav: {
-    home: string
-    about: string
-    projects: string
-    contact: string
-  }
-  hero: {
-    greeting: string
-    name: string
-    title: string
-    description: string
-    downloadCV: string
-    contactMe: string
-  }
-  about: {
-    title: string
-    description: string
-  }
-  projects: {
-    title: string
-    viewProject: string
-    sourceCode: string
-  }
-  contact: {
-    title: string
-    description: string
-    name: string
-    email: string
-    message: string
-    send: string
-  }
-  techStack: {
-    title: string
-    noSkills: string
-    clearFilters: string
-    showingSkills: string
-    of: string
-    skills: string
-    instruction: string
+  [key: string]: {
+    [key: string]: string
   }
 }
 
-const translations: Record<Language, Translations> = {
+const translations: Translations = {
   en: {
-    nav: {
-      home: "Home",
-      about: "About",
-      projects: "Projects",
-      contact: "Contact",
-    },
-    hero: {
-      greeting: "Hello, I'm",
-      name: "Lantianqi",
-      title: "Full Stack Developer",
-      description: "I create beautiful and functional web applications with modern technologies.",
-      downloadCV: "Download CV",
-      contactMe: "Contact Me",
-    },
-    about: {
-      title: "About Me",
-      description:
-        "I am a passionate full-stack developer with expertise in modern web technologies. I love creating efficient, scalable, and user-friendly applications.",
-    },
-    projects: {
-      title: "My Projects",
-      viewProject: "View Project",
-      sourceCode: "Source Code",
-    },
-    contact: {
-      title: "Get In Touch",
-      description: "Feel free to reach out to me for any inquiries or collaboration opportunities.",
-      name: "Name",
-      email: "Email",
-      message: "Message",
-      send: "Send Message",
-    },
-    techStack: {
-      title: "Technical Skills",
-      noSkills: "No skills to display",
-      clearFilters: "Clear All",
-      showingSkills: "Showing",
-      of: "of",
-      skills: "skills",
-      instruction: "Click on categories above to filter skills",
-    },
+    "nav.portfolio": "Portfolio",
+    "nav.about": "About",
+    "nav.projects": "Projects",
+    "nav.contact": "Contact",
+    "hero.greeting": "Hello, I'm",
+    "hero.name": "Lantianqi",
+    "hero.title": "Full Stack Developer",
+    "hero.subtitle": "Passionate about creating innovative web solutions",
+    "hero.cta.projects": "View Projects",
+    "hero.cta.contact": "Get In Touch",
+    "about.title": "About Me",
+    "about.description":
+      "I am a passionate full-stack developer with expertise in modern web technologies. I love creating efficient, scalable, and user-friendly applications.",
+    "about.skills.title": "Technical Skills",
+    "about.skills.all": "All Skills",
+    "about.skills.frontend": "Frontend",
+    "about.skills.backend": "Backend",
+    "about.skills.database": "Database",
+    "about.skills.devops": "DevOps",
+    "about.skills.mobile": "Mobile",
+    "about.skills.tools": "Tools",
+    "about.skills.languages": "Languages",
+    "about.skills.showing": "Showing",
+    "about.skills.of": "of",
+    "about.skills.skills": "skills",
+    "projects.title": "Projects",
+    "projects.description": "Here are some of my recent projects",
+    "contact.title": "Get In Touch",
+    "contact.description": "Let's work together on your next project",
+    "contact.email": "Email",
+    "contact.phone": "Phone",
+    "contact.location": "Location",
   },
   zh: {
-    nav: {
-      home: "首页",
-      about: "关于",
-      projects: "项目",
-      contact: "联系",
-    },
-    hero: {
-      greeting: "你好，我是",
-      name: "蓝天奇",
-      title: "全栈开发工程师",
-      description: "我使用现代技术创建美观且功能强大的网络应用程序。",
-      downloadCV: "下载简历",
-      contactMe: "联系我",
-    },
-    about: {
-      title: "关于我",
-      description: "我是一名充满激情的全栈开发工程师，专精于现代网络技术。我热爱创建高效、可扩展且用户友好的应用程序。",
-    },
-    projects: {
-      title: "我的项目",
-      viewProject: "查看项目",
-      sourceCode: "源代码",
-    },
-    contact: {
-      title: "联系我",
-      description: "如有任何咨询或合作机会，请随时与我联系。",
-      name: "姓名",
-      email: "邮箱",
-      message: "消息",
-      send: "发送消息",
-    },
-    techStack: {
-      title: "技术技能",
-      noSkills: "没有技能可显示",
-      clearFilters: "清除所有",
-      showingSkills: "显示",
-      of: "共",
-      skills: "项技能",
-      instruction: "点击上方类别来筛选技能",
-    },
+    "nav.portfolio": "作品集",
+    "nav.about": "关于我",
+    "nav.projects": "项目",
+    "nav.contact": "联系我",
+    "hero.greeting": "你好，我是",
+    "hero.name": "蓝天琦",
+    "hero.title": "全栈开发工程师",
+    "hero.subtitle": "热衷于创造创新的网络解决方案",
+    "hero.cta.projects": "查看项目",
+    "hero.cta.contact": "联系我",
+    "about.title": "关于我",
+    "about.description":
+      "我是一名充满激情的全栈开发工程师，精通现代网络技术。我热爱创建高效、可扩展且用户友好的应用程序。",
+    "about.skills.title": "技术技能",
+    "about.skills.all": "所有技能",
+    "about.skills.frontend": "前端",
+    "about.skills.backend": "后端",
+    "about.skills.database": "数据库",
+    "about.skills.devops": "运维",
+    "about.skills.mobile": "移动端",
+    "about.skills.tools": "工具",
+    "about.skills.languages": "编程语言",
+    "about.skills.showing": "显示",
+    "about.skills.of": "共",
+    "about.skills.skills": "项技能",
+    "projects.title": "项目展示",
+    "projects.description": "这里是我最近的一些项目",
+    "contact.title": "联系我",
+    "contact.description": "让我们一起合作您的下一个项目",
+    "contact.email": "邮箱",
+    "contact.phone": "电话",
+    "contact.location": "位置",
   },
 }
 
 interface LanguageContextType {
   language: Language
   setLanguage: (lang: Language) => void
-  translations: Translations
+  t: (key: string) => string
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
-export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("en")
+
+  const t = (key: string): string => {
+    return translations[language]?.[key] || key
+  }
 
   const value = {
     language,
     setLanguage,
-    translations: translations[language],
+    t,
   }
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
 }
 
-export const useLanguage = () => {
+export function useLanguage() {
   const context = useContext(LanguageContext)
   if (context === undefined) {
     throw new Error("useLanguage must be used within a LanguageProvider")
