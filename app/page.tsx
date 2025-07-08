@@ -1,11 +1,13 @@
-import { LanguageProvider } from "@/contexts/language-context"
+"use client"
+
 import Navigation from "@/components/navigation"
 import HeroSection from "@/components/hero-section"
 import AboutSection from "@/components/about-section"
 import ProjectsSection from "@/components/projects-section"
 import ContactSection from "@/components/contact-section"
-import BackgroundAnimation from "@/components/background-animation"
 import ScrollIndicator from "@/components/scroll-indicator"
+import BackgroundAnimation from "@/components/background-animation"
+import { LanguageProvider } from "@/contexts/language-context"
 
 export default function Home() {
   return (
@@ -14,13 +16,10 @@ export default function Home() {
         <BackgroundAnimation />
         <Navigation />
         <ScrollIndicator />
-
-        <div className="relative z-10">
-          <HeroSection />
-          <AboutSection />
-          <ProjectsSection />
-          <ContactSection />
-        </div>
+        <HeroSection />
+        <AboutSection />
+        <ProjectsSection />
+        <ContactSection />
       </main>
     </LanguageProvider>
   )

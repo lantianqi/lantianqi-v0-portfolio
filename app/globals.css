@@ -311,7 +311,7 @@ a {
 
 @supports (backdrop-filter: blur(10px)) {
   .backdrop-blur-fallback {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
   }
 }

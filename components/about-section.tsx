@@ -3,80 +3,44 @@
 import { useLanguage } from "@/contexts/language-context"
 import TechStackWordCloud from "./tech-stack-word-cloud"
 
-const skillsData = [
-  // Frontend
+// Sample skills data - replace with your actual skills
+const sampleSkills = [
   { name: "React", proficiency: 5, type: "Frontend" },
   { name: "Next.js", proficiency: 5, type: "Frontend" },
-  { name: "TypeScript", proficiency: 4, type: "Frontend" },
-  { name: "JavaScript", proficiency: 5, type: "Frontend" },
-  { name: "HTML5", proficiency: 5, type: "Frontend" },
-  { name: "CSS3", proficiency: 5, type: "Frontend" },
-  { name: "Tailwind CSS", proficiency: 4, type: "Frontend" },
-  { name: "Vue.js", proficiency: 3, type: "Frontend" },
-  { name: "Angular", proficiency: 3, type: "Frontend" },
-  { name: "Sass", proficiency: 4, type: "Frontend" },
-
-  // Backend
+  { name: "TypeScript", proficiency: 4, type: "Languages" },
+  { name: "JavaScript", proficiency: 5, type: "Languages" },
   { name: "Node.js", proficiency: 4, type: "Backend" },
-  { name: "Express.js", proficiency: 4, type: "Backend" },
-  { name: "Python", proficiency: 4, type: "Backend" },
-  { name: "Django", proficiency: 3, type: "Backend" },
-  { name: "FastAPI", proficiency: 3, type: "Backend" },
-  { name: "Java", proficiency: 3, type: "Backend" },
-  { name: "Spring Boot", proficiency: 3, type: "Backend" },
-  { name: "PHP", proficiency: 3, type: "Backend" },
-
-  // Database
+  { name: "Python", proficiency: 4, type: "Languages" },
   { name: "PostgreSQL", proficiency: 4, type: "Database" },
-  { name: "MongoDB", proficiency: 4, type: "Database" },
-  { name: "MySQL", proficiency: 4, type: "Database" },
-  { name: "Redis", proficiency: 3, type: "Database" },
-  { name: "Supabase", proficiency: 4, type: "Database" },
-  { name: "Firebase", proficiency: 3, type: "Database" },
-
-  // DevOps
-  { name: "Docker", proficiency: 4, type: "DevOps" },
+  { name: "MongoDB", proficiency: 3, type: "Database" },
+  { name: "Docker", proficiency: 3, type: "DevOps" },
   { name: "AWS", proficiency: 3, type: "DevOps" },
-  { name: "Vercel", proficiency: 4, type: "DevOps" },
-  { name: "GitHub Actions", proficiency: 3, type: "DevOps" },
-  { name: "Nginx", proficiency: 3, type: "DevOps" },
-  { name: "Kubernetes", proficiency: 2, type: "DevOps" },
-
-  // Mobile
+  { name: "Git", proficiency: 5, type: "Tools" },
+  { name: "Tailwind CSS", proficiency: 5, type: "Frontend" },
+  { name: "Vue.js", proficiency: 3, type: "Frontend" },
+  { name: "Express.js", proficiency: 4, type: "Backend" },
+  { name: "GraphQL", proficiency: 3, type: "Backend" },
   { name: "React Native", proficiency: 3, type: "Mobile" },
   { name: "Flutter", proficiency: 2, type: "Mobile" },
-  { name: "Expo", proficiency: 3, type: "Mobile" },
-
-  // Tools
-  { name: "Git", proficiency: 5, type: "Tools" },
-  { name: "VS Code", proficiency: 5, type: "Tools" },
-  { name: "Figma", proficiency: 3, type: "Tools" },
-  { name: "Postman", proficiency: 4, type: "Tools" },
-  { name: "Webpack", proficiency: 3, type: "Tools" },
-  { name: "Vite", proficiency: 4, type: "Tools" },
-
-  // Languages
-  { name: "C++", proficiency: 3, type: "Languages" },
-  { name: "Go", proficiency: 2, type: "Languages" },
-  { name: "Rust", proficiency: 2, type: "Languages" },
-  { name: "C#", proficiency: 2, type: "Languages" },
+  { name: "Redis", proficiency: 3, type: "Database" },
+  { name: "Kubernetes", proficiency: 2, type: "DevOps" },
+  { name: "Figma", proficiency: 4, type: "Tools" },
 ]
 
 export default function AboutSection() {
   const { t } = useLanguage()
 
   return (
-    <section id="about" className="min-h-screen py-20 bg-black/20 backdrop-blur-sm flex items-center">
-      <div className="container mx-auto px-6 w-full">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-8">{t("about.title")}</h2>
-          <p className="text-lg text-white/80 max-w-3xl mx-auto leading-relaxed">{t("about.description")}</p>
-        </div>
+    <section id="about" className="min-h-screen flex items-center justify-center py-20">
+      <div className="container mx-auto px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">{t("about.title")}</h2>
+          <p className="text-xl text-white/80 mb-12 leading-relaxed">{t("about.description")}</p>
 
-        {/* Tech Stack Word Cloud */}
-        <div className="mt-16">
-          <h3 className="text-2xl font-bold text-white mb-8 text-center">{t("about.skills")}</h3>
-          <TechStackWordCloud skills={skillsData} />
+          {/* Tech Stack Word Cloud */}
+          <div className="mt-16">
+            <TechStackWordCloud skills={sampleSkills} />
+          </div>
         </div>
       </div>
     </section>
