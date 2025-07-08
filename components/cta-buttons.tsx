@@ -1,35 +1,34 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
-import { ArrowRight, Mail } from "lucide-react"
 
-export default function CTAButtons() {
+interface CTAButtonsProps {
+  className?: string
+  onViewWork?: () => void
+  onGetInTouch?: () => void
+}
+
+export default function CTAButtons({ className = "", onViewWork, onGetInTouch }: CTAButtonsProps) {
   const { t } = useLanguage()
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
-  }
-
   return (
-    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-      <button
-        onClick={() => scrollToSection("projects")}
-        className="group px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-all duration-300 flex items-center gap-2 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
+    <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${className}`}>
+      <Button
+        size="lg"
+        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 px-8 py-3"
+        onClick={onViewWork}
       >
-        {t("hero.cta.projects")}
-        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-      </button>
-
-      <button
-        onClick={() => scrollToSection("contact")}
-        className="group px-8 py-4 bg-transparent border-2 border-white/30 hover:border-white/50 text-white font-medium rounded-lg transition-all duration-300 flex items-center gap-2 hover:bg-white/10 hover:scale-105"
+        {t("hero.viewWork")}
+      </Button>
+      <Button
+        size="lg"
+        variant="outline"
+        className="border-white/30 text-white hover:bg-white/10 px-8 py-3 bg-transparent"
+        onClick={onGetInTouch}
       >
-        <Mail className="w-5 h-5" />
-        {t("hero.cta.contact")}
-      </button>
+        {t("hero.getInTouch")}
+      </Button>
     </div>
   )
 }

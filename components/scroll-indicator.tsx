@@ -1,27 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { ArrowDown } from "lucide-react"
 
-export default function ScrollIndicator() {
-  const [scrollProgress, setScrollProgress] = useState(0)
+interface ScrollIndicatorProps {
+  className?: string
+}
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = (window.scrollY / totalHeight) * 100
-      setScrollProgress(progress)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
+export default function ScrollIndicator({ className = "" }: ScrollIndicatorProps) {
   return (
-    <div className="fixed top-0 left-0 w-full h-1 bg-white/10 z-50">
-      <div
-        className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-150 ease-out"
-        style={{ width: `${scrollProgress}%` }}
-      />
+    <div className={`animate-bounce ${className}`}>
+      <ArrowDown className="w-6 h-6 text-white/60 mx-auto" />
     </div>
   )
 }

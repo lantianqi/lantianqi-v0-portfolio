@@ -6,12 +6,10 @@ export default function AboutSection() {
   const { t } = useLanguage()
 
   return (
-    <section id="about" className="relative py-20 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{t("about.title")}</h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">{t("about.description")}</p>
-        </div>
+    <section id="about" className="min-h-screen py-20 bg-black/20 backdrop-blur-sm flex items-center">
+      <div className="container mx-auto px-6 text-center w-full">
+        <h2 className="text-4xl font-bold text-white mb-8">{t("about.title")}</h2>
+        <p className="text-lg text-white/80 max-w-3xl mx-auto leading-relaxed">{t("about.description")}</p>
       </div>
     </section>
   )

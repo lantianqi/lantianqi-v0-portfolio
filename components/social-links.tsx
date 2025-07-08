@@ -1,45 +1,32 @@
 "use client"
 
-import { Github, Linkedin, Twitter, Mail } from "lucide-react"
+import { Github, Linkedin, Mail } from "lucide-react"
+import Link from "next/link"
 
-export default function SocialLinks() {
-  const socialLinks = [
-    {
-      icon: Github,
-      href: "https://github.com",
-      label: "GitHub",
-    },
-    {
-      icon: Linkedin,
-      href: "https://linkedin.com",
-      label: "LinkedIn",
-    },
-    {
-      icon: Twitter,
-      href: "https://twitter.com",
-      label: "Twitter",
-    },
-    {
-      icon: Mail,
-      href: "mailto:hello@lantianqi.dev",
-      label: "Email",
-    },
-  ]
+interface SocialLinksProps {
+  className?: string
+  githubUrl?: string
+  linkedinUrl?: string
+  emailUrl?: string
+}
 
+export default function SocialLinks({
+  className = "",
+  githubUrl = "#",
+  linkedinUrl = "#",
+  emailUrl = "#",
+}: SocialLinksProps) {
   return (
-    <div className="flex justify-center gap-6">
-      {socialLinks.map((social) => (
-        <a
-          key={social.label}
-          href={social.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-3 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300 hover:scale-110"
-          aria-label={social.label}
-        >
-          <social.icon className="w-6 h-6" />
-        </a>
-      ))}
+    <div className={`flex justify-center space-x-6 ${className}`}>
+      <Link href={githubUrl} className="text-white/60 hover:text-white transition-colors p-2">
+        <Github className="w-6 h-6" />
+      </Link>
+      <Link href={linkedinUrl} className="text-white/60 hover:text-white transition-colors p-2">
+        <Linkedin className="w-6 h-6" />
+      </Link>
+      <Link href={emailUrl} className="text-white/60 hover:text-white transition-colors p-2">
+        <Mail className="w-6 h-6" />
+      </Link>
     </div>
   )
 }
