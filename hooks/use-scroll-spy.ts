@@ -70,15 +70,26 @@ export function useScrollSpy({ sections, offset = 100, updateUrl = true }: Scrol
 
   // Function to handle programmatic navigation
   const navigateToSection = (sectionId: string) => {
+    console.log(`Navigating to section: ${sectionId}`) // Debug log
+
     isNavigatingRef.current = true
 
     const element = document.getElementById(sectionId)
     if (element) {
       // Update URL immediately
-      window.history.replaceState(null, "", `#${sectionId}`)
+      if (updateUrl) {
+        window.history.replaceState(null, "", `#${sectionId}`)
+      }
 
-      // Scroll to element
-      element.scrollIntoView({ behavior: "smooth" })
+      // Calculate the scroll position accounting for the fixed navbar
+      const navbarHeight = 80 // Approximate navbar height
+      const elementPosition = element.offsetTop - navbarHeight
+
+      // Scroll to element with smooth behavior
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth",
+      })
 
       // Update active section immediately
       setActiveSection(sectionId)
@@ -87,6 +98,9 @@ export function useScrollSpy({ sections, offset = 100, updateUrl = true }: Scrol
       setTimeout(() => {
         isNavigatingRef.current = false
       }, 1000) // Give enough time for smooth scroll to complete
+    } else {
+      console.warn(`Element with id "${sectionId}" not found`)
+      isNavigatingRef.current = false
     }
   }
 

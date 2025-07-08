@@ -5,10 +5,40 @@ import { Github, Linkedin, Mail, ArrowDown } from "lucide-react"
 import Link from "next/link"
 import HandwrittenName from "@/components/handwritten-name"
 import { useLanguage } from "@/contexts/language-context"
+import { useEffect, useState } from "react"
 import "@/components/handwritten-name.css"
 
 export default function HeroSection() {
   const { t } = useLanguage()
+  const [displayedText, setDisplayedText] = useState("")
+  const [showCursor, setShowCursor] = useState(false)
+  const [isTypingComplete, setIsTypingComplete] = useState(false)
+
+  const fullText = t("hero.subtitle")
+
+  useEffect(() => {
+    // Start typing animation after handwritten name animation completes
+    const startDelay = 6500 // 6.5 seconds to match the original timing
+
+    const startTyping = setTimeout(() => {
+      setShowCursor(true)
+      let currentIndex = 0
+
+      const typeInterval = setInterval(() => {
+        if (currentIndex < fullText.length) {
+          setDisplayedText(fullText.slice(0, currentIndex + 1))
+          currentIndex++
+        } else {
+          clearInterval(typeInterval)
+          setIsTypingComplete(true)
+        }
+      }, 80) // Adjust speed as needed (80ms per character)
+
+      return () => clearInterval(typeInterval)
+    }, startDelay)
+
+    return () => clearTimeout(startTyping)
+  }, [fullText])
 
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -22,19 +52,23 @@ export default function HeroSection() {
       </div>
 
       <div className="relative z-10 text-center px-6 w-full max-w-6xl mx-auto">
-        {/* Limelight Font Handwritten Name */}
         <div className="mb-8">
           <HandwrittenName name="lantianqi" className="mx-auto" />
 
           {/* Animated underline */}
           <div className="flex justify-center">
-            <div className="h-1 bg-gradient-to-r from-purple-400 to-pink-400 animated-underline max-w-[800px] w-full"></div>
+            <div className="h-1 bg-gradient-to-r from-purple-400 to-pink-400 animated-underline w-full"></div>
           </div>
         </div>
 
         {/* Subtitle with typewriter effect */}
-        <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
-          <span className="typewriter">{t("hero.subtitle")}</span>
+        <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto px-4">
+          <span className="typewriter-container inline-block max-w-full text-left">
+            <span className="typewriter-text break-words">{displayedText}</span>
+            <span className={`typewriter-cursor inline-block ml-1 ${showCursor ? "animate-blink" : "opacity-0"}`}>
+              |
+            </span>
+          </span>
         </p>
 
         {/* CTA Buttons */}
