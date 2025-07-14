@@ -43,7 +43,12 @@ export default function HandwrittenName({ name = "lantianqi", className = "" }: 
 
   return (
     <div className={`handwritten-name-container ${className}`}>
-      <svg viewBox={`0 0 ${totalWidth + 20} 70`} className="handwritten-name" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        viewBox={`0 0 ${totalWidth + 20} 70`}
+        className="handwritten-name"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ background: "transparent" }}
+      >
         {letters.map((letter, index) => {
           const letterKey = letter as keyof typeof letterPaths
           const path = letterPaths[letterKey]
